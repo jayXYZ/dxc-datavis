@@ -8,7 +8,7 @@ import {
 import AppSidebar from '@/components/AppSidebar'
 
 async function fetchData(): Promise<ResultsData | null> {
-  const url = `https://mtg-data.fly.dev/matchup/cached`
+  const url = `/api/matchup/cached`
   try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -24,7 +24,7 @@ async function fetchData(): Promise<ResultsData | null> {
 }
 
 async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | null> {
-  const url = `https://mtg-data.fly.dev/archetype/overallrecord?archetype=${archetype}`
+  const url = `/api/archetype/overallrecord?archetype=${archetype}`
   try {
       const response = await fetch(url);
       if (!response.ok) {
