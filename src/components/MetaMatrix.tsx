@@ -8,127 +8,167 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-const archetypes = [
-    {id: "Goblins", deckname: "Goblins"},
-    {id: "Sligh", deckname: "Sligh"},
-    {id: "Black/White Control", deckname: "Black/White Control"},
-    {id: "Elves", deckname: "Elves"},
-    {id: "Enchantress", deckname: "Enchantress"},
-    {id: "Gro-a-tog", deckname: "Gro-a-tog"},
-    {id: "Landstill", deckname: "Landstill"},
-    {id: "Machine Head", deckname: "Machine Head"},
-    {id: "Mono Blue Dreadnought", deckname: "Mono Blue Dreadnought"},
-    {id: "Reanimator", deckname: "Reanimator"},
-    {id: "Replenish", deckname: "Replenish"},
-    {id: "Red/Green Oath Ponza", deckname: "Red/Green Oath Ponza"},
-    {id: "The Rock", deckname: "The Rock"},
-    {id: "Stasis", deckname: "Stasis"},
-    {id: "Survival Madness", deckname: "Survival Madness"}, 
-    {id: "Survival Rock", deckname: "Survival Rock"},
-    {id: "Terrageddon", deckname: "Terrageddon"},
-    {id: "Blue/Black Psychatog", deckname: "Blue/Black Psychatog"},
-    {id: "Blue/White Dreadnought", deckname: "Blue/White Dreadnought"}
-]
-
-interface MatchupResponse {
+interface MatchupData {
     archetype_1_wins: number;
     archetype_2_wins: number;
 }
 
-async function fetchWinrate(herodeck: string, villaindeck: string): Promise<MatchupResponse | null> {
-    const url = `/api/matchup?archetype=${herodeck}&opponent=${villaindeck}`
+interface ResultsData {
+    results: Record<string, Record<string, MatchupData>>;
+}
+
+interface ArchetypeRecord {
+    wins: number;
+    losses: number;
+}
+
+async function fetchData(): Promise<ResultsData | null> {
+    const url = `/api/matchup/cached`
     try {
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-    
-        const data = await response.json() as MatchupResponse;
-        const totalGames = data.archetype_1_wins + data.archetype_2_wins;
-        if (totalGames === 0) return null;
+        const data = await response.json();
         return data;
     } catch (error: unknown) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error(errorMessage);
-        return null
+        return null;
+    }
+}
+
+async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | null> {
+    const url = `/api/archetype/overallrecord?archetype=${archetype}`
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error(errorMessage);
+        return null;
     }
 }
 
 function MetaMatrix() {
-    const [winrates, setWinrates] = useState<Record<string, Record<string, number>>>({});
+    const [matchupData, setMatchupData] = useState<Record<string, Record<string, MatchupData>>>({});
+    const [archetypeRecords, setArchetypeRecords] = useState<Record<string, ArchetypeRecord>>({});
+    const archetypes = Object.keys(matchupData).map(name => ({ id: name }));
 
-    // Add a function to calculate the background color
     const getWinrateColor = (winrate: number) => {
-        // Convert winrate to a number between 0 and 1
         const normalizedWinrate = winrate / 100;
-        // Use HSL to interpolate between red (0deg) through yellow (60deg) to green (120deg)
-        const hue = normalizedWinrate * 120; // This will go from 0 (red) to 120 (green)
-        return `hsl(${hue}, 75%, 65%)`;
+        const hue = normalizedWinrate * 120;
+        return `hsl(${hue}, 70%, 45%)`;
     };
 
     useEffect(() => {
-        // Fetch all winrates when component mounts
-        const fetchAllWinrates = async () => {
-            const rates: Record<string, Record<string, number>> = {};
-            for (const hero of archetypes) {
-                rates[hero.id] = {};
-                for (const villain of archetypes) {
-                    const winrate = await fetchWinrate(hero.id, villain.id);
-                    rates[hero.id][villain.id] = winrate?.archetype_1_wins ?? 0;
+        const fetchAndSetData = async () => {
+            // Fetch matchup data
+            const data = await fetchData();
+            if (data?.results) {
+                setMatchupData(data.results);
+                
+                // After getting matchup data, fetch win rates for each archetype
+                const records: Record<string, ArchetypeRecord> = {};
+                for (const archetype of Object.keys(data.results)) {
+                    const record = await fetchArchetypeWinRate(archetype);
+                    if (record) {
+                        records[archetype] = record;
+                    }
                 }
+                setArchetypeRecords(records);
             }
-            setWinrates(rates);
         };
-
-        fetchAllWinrates();
+        fetchAndSetData();
     }, []);
 
+    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number } | null => {
+        const matchup = matchupData[hero]?.[villain];
+        if (!matchup) return null;
+        
+        const wins = matchup.archetype_1_wins;
+        const losses = matchup.archetype_2_wins;
+        const total = wins + losses;
+        
+        if (total === 0) return null;
+        return {
+            winrate: (wins / total) * 100,
+            wins,
+            losses
+        };
+    };
+
+    if (archetypes.length === 0) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <>
-            <Table className='w-[500px]'>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className='text-center'>Archetype</TableHead>
-                        {archetypes.map(archetype => (
-                            <TableHead className='text-center' key={archetype.id}>{archetype.deckname}</TableHead>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {archetypes.map(hero => (
-                        <TableRow key={hero.id}>
-                            <TableCell>
-                                {hero.deckname}
-                            </TableCell>
-                            {archetypes.map(villain => {
-                                if (hero.deckname === villain.deckname) {
-                                    return <TableCell className='bg-gray-500 w-[130px]' key={villain.id}></TableCell>;
-                                }
-                                
-                                const heroWins = winrates[hero.id]?.[villain.id] || 0;
-                                const villainWins = winrates[villain.id]?.[hero.id] || 0;
-                                const totalGames = heroWins + villainWins;
-                                const winrate = totalGames > 0 ? (heroWins / totalGames * 100) : 0;
-                                
-                                return (
-                                    <TableCell 
-                                        className='relative w-[130px]' 
-                                        key={villain.id}
-                                        style={{ 
-                                            backgroundColor: getWinrateColor(winrate),
-                                            transition: 'background-color 0.3s ease'
-                                        }}
-                                    >
-                                        <h4>{winrate.toFixed(1) + '%' || 'Loading...'}</h4>
-                                        <p>{heroWins}W - {villainWins}L</p>
-                                    </TableCell>
-                                );
-                            })}
-                        </TableRow>
+        <Table className='border-collapse'>
+            <TableHeader>
+                <TableRow>
+                    <TableHead className='text-center w-[150px] min-w-[150px] sticky left-0 top-0 z-30 bg-background'>
+                        Archetype
+                    </TableHead>
+                    {archetypes.map(archetype => (
+                        <TableHead 
+                            className='text-center max-w-[120px] min-w-[120px] sticky top-0 z-20 bg-background text-primary' 
+                            key={archetype.id}
+                        >
+                            {archetype.id}
+                        </TableHead>
                     ))}
-                </TableBody>
-            </Table>
-        </>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {archetypes.map(hero => (
+                    <TableRow key={hero.id}>
+                        <TableCell className='w-[150px] min-w-[150px] h-[80px] sticky left-0 z-10 bg-background'>
+                            <div className='text-center'>
+                                <p className='font-bold'>{hero.id}</p>
+                                {archetypeRecords[hero.id] && (
+                                    <p className='text-sm text-gray-500'>
+                                        {archetypeRecords[hero.id].wins}W - {archetypeRecords[hero.id].losses}L
+                                        <br />
+                                        {((archetypeRecords[hero.id].wins / (archetypeRecords[hero.id].wins + archetypeRecords[hero.id].losses)) * 100).toFixed(1)}%
+                                    </p>
+                                )}
+                            </div>
+                        </TableCell>
+                        {archetypes.map(villain => {
+                            if (hero.id === villain.id) {
+                                return <TableCell className='bg-gray-500 w-[120px] min-w-[120px] text-center' key={villain.id}></TableCell>;
+                            }
+                            
+                            const result = calculateWinrate(hero.id, villain.id);
+                            
+                            return (
+                                <TableCell 
+                                    className='w-[100px] min-w-[100px] text-center p-2' 
+                                    key={villain.id}
+                                    style={{ 
+                                        backgroundColor: result ? getWinrateColor(result.winrate) : undefined,
+                                        transition: 'background-color 0.3s ease'
+                                    }}
+                                >
+                                    {result ? (
+                                        <>
+                                            <h4 className='font-bold'>{result.winrate.toFixed(1)}%</h4>
+                                            <p className='text-sm'>{result.wins}W - {result.losses}L</p>
+                                        </>
+                                    ) : (
+                                        <h4>Loading...</h4>
+                                    )}
+                                </TableCell>
+                            );
+                        })}
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     )
 }
 
