@@ -66,14 +66,18 @@ function AppSidebar({
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader>
-                <SidebarMenuButton onClick={toggleSidebar} className="justify-center mb-4">
-                    <img src={swampLogo} alt="Swamp Logo" className="h-8 w-8" />
-                    <span>DxC: Project Metagame</span>
-                </SidebarMenuButton>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton onClick={toggleSidebar} className="mb-4">
+                            <img src={swampLogo} alt="Swamp Logo" className="h-8 w-8" />
+                            <span>DxC: Project Metagame</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarMenu>
-                    <Collapsible defaultOpen className="group/collapsible">
+                    <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton>
@@ -106,7 +110,7 @@ function AppSidebar({
                             </CollapsibleContent>
                         </SidebarMenuItem>
                     </Collapsible>
-                    <Collapsible defaultOpen className="group/collapsible">
+                    <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton>

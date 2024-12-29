@@ -46,6 +46,7 @@ function App() {
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [isLoading, setIsLoading] = useState(true);
 
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
     return [...archList].sort((a, b) => {
@@ -92,32 +93,52 @@ function App() {
 
   useEffect(() => {
     const fetchAndSetData = async () => {
+        setIsLoading(true);
         // Fetch matchup data
         const data = await fetchData();
         if (data?.results) {
-            setMatchupData(data.results);
             const allArchetypes = Object.keys(data.results);
-            setArchetypes(allArchetypes);
-            setVisibleArchetypes(allArchetypes);
             
-            // After getting matchup data, fetch win rates for each archetype
+            // Fetch all win rates before showing anything
             const records: Record<string, ArchetypeRecord> = {};
-            for (const archetype of allArchetypes) {
+            const fetchPromises = allArchetypes.map(async (archetype) => {
                 const record = await fetchArchetypeWinRate(archetype);
                 if (record) {
                     records[archetype] = record;
                 }
-            }
-            setArchetypeRecords(records);
+            });
+
+            // Wait for all record fetches to complete
+            await Promise.all(fetchPromises);
             
-            // Only sort after we have both matchup data and archetype records
-            const sortedArchetypes = sortArchetypes('games', 'desc', allArchetypes);
+            // Now that we have all the data, set everything at once
+            const sortedArchetypes = [...allArchetypes].sort((a, b) => {
+                const recordA = records[a];
+                const recordB = records[b];
+                const gamesA = recordA ? recordA.wins + recordA.losses : 0;
+                const gamesB = recordB ? recordB.wins + recordB.losses : 0;
+                return gamesB - gamesA; // Default sort: descending by games played
+            });
+
+            setMatchupData(data.results);
+            setArchetypeRecords(records);
             setArchetypes(sortedArchetypes);
             setVisibleArchetypes(sortedArchetypes);
+            setIsLoading(false);
         }
     };
     fetchAndSetData();
 }, []);
+
+  if (isLoading) {
+    return (
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-lg">Loading data...</div>
+        </div>
+      </ThemeProvider>
+    );
+  }
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
