@@ -76,7 +76,7 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixPro
                 <TableBody>
                     {archetypes.map(hero => (
                         <TableRow key={hero}>
-                            <TableCell className='w-[150px] min-w-[150px] h-[80px] sticky left-0 z-10 bg-background'>
+                            <TableCell className='w-[150px] min-w-[150px] h-[120px] sticky left-0 z-10 bg-background'>
                                 <div className='text-center'>
                                     <p className='font-bold'>{hero}</p>
                                     {archetypeRecords[hero] && (
