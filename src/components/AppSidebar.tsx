@@ -38,7 +38,7 @@ function AppSidebar({
     sortDirection,
     onSort
 }: AppSidebarProps) {
-    const { toggleSidebar } = useSidebar();
+    const { setOpen, toggleSidebar } = useSidebar();
 
     const handleCheckboxChange = (deckname: string, checked: boolean) => {
         if (checked) {
@@ -80,7 +80,7 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
                                     <ArrowDownUp />
                                     Sort
                                     <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
@@ -113,7 +113,7 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
                                     <Filter />
                                     Filter
                                     <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />

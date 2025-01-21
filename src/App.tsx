@@ -65,7 +65,7 @@ function App() {
         return direction === 'asc' ? winrateA - winrateB : winrateB - winrateA;
       }
       // alphabetical
-      return direction === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+      return direction === 'asc' ? b.localeCompare(a) :  a.localeCompare(b);
     });
   };
 
@@ -144,7 +144,7 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <SidebarProvider>
         <AppSidebar 
-          archetypes={archetypes}
+          archetypes={sortArchetypes('alpha', 'desc', archetypes)}
           visibleArchetypes={visibleArchetypes}
           setVisibleArchetypes={handleVisibilityChange}
           sortMethod={sortMethod}
