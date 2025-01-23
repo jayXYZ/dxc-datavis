@@ -46,6 +46,7 @@ function App() {
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>('total');
   const [isLoading, setIsLoading] = useState(true);
 
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
@@ -65,7 +66,7 @@ function App() {
         return direction === 'asc' ? winrateA - winrateB : winrateB - winrateA;
       }
       // alphabetical
-      return direction === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
+      return direction === 'asc' ? b.localeCompare(a) :  a.localeCompare(b);
     });
   };
 
@@ -144,17 +145,20 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <SidebarProvider>
         <AppSidebar 
-          archetypes={archetypes}
+          archetypes={sortArchetypes('alpha', 'desc', archetypes)}
           visibleArchetypes={visibleArchetypes}
           setVisibleArchetypes={handleVisibilityChange}
           sortMethod={sortMethod}
           sortDirection={sortDirection}
           onSort={handleSort}
+          winrateOption={winrateOption}
+          setWinrateOption={setWinrateOption}
         />
         <MetaMatrix 
           matchupData={matchupData}
           archetypeRecords={archetypeRecords}
           archetypes={visibleArchetypes}
+          winrateOption={winrateOption}
         />
       </SidebarProvider>
     </ThemeProvider>

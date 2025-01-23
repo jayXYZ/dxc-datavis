@@ -6,6 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+//@ts-ignore
+import wilson from 'wilson-score-interval'
 
 export interface MatchupData {
     archetype_1_wins: number;
@@ -25,9 +27,10 @@ interface MetaMatrixProps {
     matchupData: Record<string, Record<string, MatchupData>>;
     archetypeRecords: Record<string, ArchetypeRecord>;
     archetypes: string[];
+    winrateOption: string;
 }
 
-function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixProps) {
+function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }: MetaMatrixProps) {
 
     const getWinrateColor = (winrate: number) => {
         const normalizedWinrate = winrate / 100;
@@ -35,25 +38,51 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixPro
         return `hsl(${hue}, 70%, 45%)`;
     };
 
-    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number } | null => {
+    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | null => {
         const matchup = matchupData[hero]?.[villain];
         if (!matchup) return null;
         
         const wins = matchup.archetype_1_wins;
         const losses = matchup.archetype_2_wins;
         const total = wins + losses;
+
+        const wilsonCI = wilson(wins, total)
         
         if (total === 0) return null;
         return {
             winrate: (wins / total) * 100,
             wins,
-            losses
+            losses,
+            wilsonLower: wilsonCI.left * 100,
+            wilsonUpper: wilsonCI.right * 100
+            
         };
     };
 
     if (archetypes.length === 0) {
         return <div>Loading...</div>;
     }
+
+    const filteredWinrate = (hero: string): {winrate: number, wins: number, losses: number} | null => {
+        let wins = 0;
+        let losses = 0;
+
+        for (let villain of archetypes) {
+            const matchup = matchupData[hero]?.[villain];
+            if (matchup) {
+                wins += matchup.archetype_1_wins;
+                losses += matchup.archetype_2_wins;
+            }
+        }
+
+        if (wins + losses === 0) return null;
+
+        return {
+            winrate: (wins / (wins + losses)) * 100,
+            wins, 
+            losses
+        };
+    };
 
     return (
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
@@ -81,9 +110,15 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixPro
                                     <p className='font-bold'>{hero}</p>
                                     {archetypeRecords[hero] && (
                                         <p className='text-sm text-gray-500'>
-                                            {archetypeRecords[hero].wins}W - {archetypeRecords[hero].losses}L
+                                            {winrateOption === 'filtered' ?  
+                                                `${filteredWinrate(hero)?.wins}W - ${filteredWinrate(hero)?.losses}L` :
+                                                `${archetypeRecords[hero].wins}W - ${archetypeRecords[hero].losses}L`
+                                            }
                                             <br />
-                                            {((archetypeRecords[hero].wins / (archetypeRecords[hero].wins + archetypeRecords[hero].losses)) * 100).toFixed(1)}%
+                                            {winrateOption === 'filtered' ? 
+                                                `${filteredWinrate(hero)?.winrate.toFixed(1)}%` :
+                                                `${((archetypeRecords[hero].wins / (archetypeRecords[hero].wins + archetypeRecords[hero].losses)) * 100).toFixed(1)}%`
+                                            }
                                         </p>
                                     )}
                                 </div>
@@ -97,7 +132,7 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixPro
                                 
                                 return (
                                     <TableCell 
-                                        className='w-[100px] min-w-[100px] text-center p-2' 
+                                        className='text-center p-2' 
                                         key={villain}
                                         style={{ 
                                             backgroundColor: result ? getWinrateColor(result.winrate) : undefined,
@@ -106,8 +141,9 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes }: MetaMatrixPro
                                     >
                                         {result ? (
                                             <>
-                                                <h4 className='font-bold'>{result.winrate.toFixed(1)}%</h4>
-                                                <p className='text-sm'>{result.wins}W - {result.losses}L</p>
+                                                <p className="text-xs">({result.wilsonLower.toFixed(1)}% - {result.wilsonUpper.toFixed(1)}%)</p>
+                                                <h4 className='font-bold text-xl'>{result.winrate.toFixed(1)}%</h4>
+                                                <p className='text-m'>{result.wins}W - {result.losses}L</p>
                                             </>
                                         ) : (
                                             <h4>Loading...</h4>
