@@ -17,8 +17,10 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter } from "lucide-react"
+import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucide-react"
 import swampLogo from "@/assets/swamp-white.svg"
 
 interface AppSidebarProps {
@@ -28,6 +30,8 @@ interface AppSidebarProps {
     sortMethod: 'games' | 'winrate' | 'alpha';
     sortDirection: 'asc' | 'desc';
     onSort: (method: 'games' | 'winrate' | 'alpha') => void;
+    winrateOption: 'total' | 'filtered';
+    setWinrateOption: (method: 'total' | 'filtered') => void;
 }
 
 function AppSidebar({ 
@@ -36,7 +40,9 @@ function AppSidebar({
     setVisibleArchetypes,
     sortMethod,
     sortDirection,
-    onSort
+    onSort,
+    winrateOption,
+    setWinrateOption
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -155,6 +161,34 @@ function AppSidebar({
                                             </SidebarMenuSubButton>
                                         </SidebarMenuSubItem>
                                     ))}
+                                </SidebarMenuSub>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                    <Collapsible className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                    <Eye />
+                                    Display Options
+                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <RadioGroup defaultValue={winrateOption}>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem value="total" id="total" onClick={() => setWinrateOption('total')} />
+                                                <Label htmlFor="option-one">Total Winrate</Label>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem value="filtered" id="filtered" onClick={() => setWinrateOption('filtered')}/>
+                                                <Label htmlFor="option-two">Filtered Winrate</Label>
+                                            </div>
+                                        </RadioGroup>
+
+                                    </SidebarMenuSubItem>
                                 </SidebarMenuSub>
                             </CollapsibleContent>
                         </SidebarMenuItem>

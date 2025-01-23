@@ -46,6 +46,7 @@ function App() {
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>('total');
   const [isLoading, setIsLoading] = useState(true);
 
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
@@ -150,11 +151,14 @@ function App() {
           sortMethod={sortMethod}
           sortDirection={sortDirection}
           onSort={handleSort}
+          winrateOption={winrateOption}
+          setWinrateOption={setWinrateOption}
         />
         <MetaMatrix 
           matchupData={matchupData}
           archetypeRecords={archetypeRecords}
           archetypes={visibleArchetypes}
+          winrateOption={winrateOption}
         />
       </SidebarProvider>
     </ThemeProvider>
