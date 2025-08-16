@@ -10,8 +10,9 @@ import {
 import wilson from 'wilson-score-interval'
 
 export interface MatchupData {
-    archetype_1_wins: number;
-    archetype_2_wins: number;
+    wins: number;
+    losses: number;
+    draws: number;
 }
 
 export interface ResultsData {
@@ -42,8 +43,8 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         const matchup = matchupData[hero]?.[villain];
         if (!matchup) return null;
         
-        const wins = matchup.archetype_1_wins;
-        const losses = matchup.archetype_2_wins;
+        const wins = matchup.wins;
+        const losses = matchup.losses;
         const total = wins + losses;
 
         const wilsonCI = wilson(wins, total)
@@ -70,8 +71,8 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         for (let villain of archetypes) {
             const matchup = matchupData[hero]?.[villain];
             if (matchup) {
-                wins += matchup.archetype_1_wins;
-                losses += matchup.archetype_2_wins;
+                wins += matchup.wins;
+                losses += matchup.losses;
             }
         }
 

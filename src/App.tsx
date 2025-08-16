@@ -1,41 +1,34 @@
 import './App.css'
-import MetaMatrix, { ResultsData, ArchetypeRecord, MatchupData } from '@/components/MetaMatrix'
+import MetaMatrix from '@/components/MetaMatrix'
+import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
-import {
-  SidebarProvider
-} from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
+import { api, ArchetypeMatrix } from '@/lib/api-client'
+import { ErrorMessage } from '@/components/ErrorMessage'
 
-async function fetchData(): Promise<ResultsData | null> {
-  const url = `https://mtg-data.fly.dev/matchup/cached`
+interface FetchError {
+  message: string;
+}
+
+async function fetchData(): Promise<ArchetypeMatrix | FetchError> {
   try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
+    return await api.getMatchupData();
   } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(errorMessage);
-      return null;
+    const message = error instanceof Error ? error.message : 'Failed to fetch matchup data';
+    console.error(message);
+    return { message };
   }
 }
 
-async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | null> {
-  const url = `https://mtg-data.fly.dev/archetype/overallrecord?archetype=${archetype}`
+async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | FetchError> {
   try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error(`Response status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
+    return await api.getArchetypeWinRate(archetype);
   } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(errorMessage);
-      return null;
+    const message = error instanceof Error ? error.message : `Failed to fetch win rate for ${archetype}`;
+    console.error(message);
+    return { message };
   }
 }
 
@@ -92,75 +85,94 @@ function App() {
     setVisibleArchetypes(sortArchetypes(sortMethod, sortDirection, newVisible));
   };
 
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchAndSetData = async () => {
-        setIsLoading(true);
-        // Fetch matchup data
-        const data = await fetchData();
-        if (data?.results) {
-            const allArchetypes = Object.keys(data.results);
-            
-            // Fetch all win rates before showing anything
-            const records: Record<string, ArchetypeRecord> = {};
-            const fetchPromises = allArchetypes.map(async (archetype) => {
-                const record = await fetchArchetypeWinRate(archetype);
-                if (record) {
-                    records[archetype] = record;
-                }
-            });
+      setIsLoading(true);
+      setError(null);
+      
+      // Fetch matchup data
+      const data = await fetchData();
+      if ('message' in data) {
+        setError(data.message);
+        setIsLoading(false);
+        return;
+      }
 
-            // Wait for all record fetches to complete
-            await Promise.all(fetchPromises);
-            
-            // Now that we have all the data, set everything at once
-            const sortedArchetypes = [...allArchetypes].sort((a, b) => {
-                const recordA = records[a];
-                const recordB = records[b];
-                const gamesA = recordA ? recordA.wins + recordA.losses : 0;
-                const gamesB = recordB ? recordB.wins + recordB.losses : 0;
-                return gamesB - gamesA; // Default sort: descending by games played
-            });
+      const allArchetypes = Object.keys(data.matrix);
+      
+      // Fetch all win rates before showing anything
+      const records: Record<string, ArchetypeRecord> = {};
+      const errors: string[] = [];
+      
+      // Fetch win rates in parallel
+      await Promise.all(
+        allArchetypes.map(async (archetype) => {
+          const result = await fetchArchetypeWinRate(archetype);
+          if ('message' in result) {
+            errors.push(`${archetype}: ${result.message}`);
+          } else {
+            records[archetype] = result;
+          }
+        })
+      );
 
-            setMatchupData(data.results);
-            setArchetypeRecords(records);
-            setArchetypes(sortedArchetypes);
-            setVisibleArchetypes(sortedArchetypes);
-            setIsLoading(false);
-        }
+      // If there were any errors fetching win rates, show them
+      if (errors.length > 0) {
+        setError(`Failed to fetch some win rates:\n${errors.join('\n')}`);
+        setIsLoading(false);
+        return;
+      }
+      
+      // Now that we have all the data, set everything at once
+      const sortedArchetypes = [...allArchetypes].sort((a, b) => {
+        const recordA = records[a];
+        const recordB = records[b];
+        const gamesA = recordA ? recordA.wins + recordA.losses : 0;
+        const gamesB = recordB ? recordB.wins + recordB.losses : 0;
+        return gamesB - gamesA; // Default sort: descending by games played
+      });
+
+      setMatchupData(data.matrix as Record<string, Record<string, MatchupData>>);
+      setArchetypeRecords(records);
+      setArchetypes(sortedArchetypes);
+      setVisibleArchetypes(sortedArchetypes);
+      setIsLoading(false);
     };
     fetchAndSetData();
-}, []);
-
-  if (isLoading) {
-    return (
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-lg">Loading data...</div>
-        </div>
-      </ThemeProvider>
-    );
-  }
+  }, []);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <SidebarProvider>
-        <AppSidebar 
-          archetypes={sortArchetypes('alpha', 'desc', archetypes)}
-          visibleArchetypes={visibleArchetypes}
-          setVisibleArchetypes={handleVisibilityChange}
-          sortMethod={sortMethod}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-          winrateOption={winrateOption}
-          setWinrateOption={setWinrateOption}
-        />
-        <MetaMatrix 
-          matchupData={matchupData}
-          archetypeRecords={archetypeRecords}
-          archetypes={visibleArchetypes}
-          winrateOption={winrateOption}
-        />
-      </SidebarProvider>
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-lg">Loading data...</div>
+        </div>
+      ) : error ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <ErrorMessage message={error} />
+        </div>
+      ) : (
+        <SidebarProvider>
+          <AppSidebar 
+            archetypes={sortArchetypes('alpha', 'desc', archetypes)}
+            visibleArchetypes={visibleArchetypes}
+            setVisibleArchetypes={handleVisibilityChange}
+            sortMethod={sortMethod}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            winrateOption={winrateOption}
+            setWinrateOption={setWinrateOption}
+          />
+          <MetaMatrix 
+            matchupData={matchupData}
+            archetypeRecords={archetypeRecords}
+            archetypes={visibleArchetypes}
+            winrateOption={winrateOption}
+          />
+        </SidebarProvider>
+      )}
     </ThemeProvider>
   )
 }
