@@ -1,0 +1,2452 @@
+{
+  "Black/White Control": {
+    "Deadguy Ale": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 5
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Elves": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 22
+    },
+    "Enchantress": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 14
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 2
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 11
+    },
+    "Goblins": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 28
+    },
+    "Landstill": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Machine Head": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 4
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 0
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 12
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 6
+    },
+    "Tide Control": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 10
+    },
+    "Reanimator": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 4
+    },
+    "Replenish": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 26
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 11
+    },
+    "The Rock": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Sligh": {
+      "archetype_1_wins": 33,
+      "archetype_2_wins": 47
+    },
+    "Stasis": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 10
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 10
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 12
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 26
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 10
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 6
+    }
+  },
+  "Deadguy Ale": {
+    "Black/White Control": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 7
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Elves": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 12
+    },
+    "Enchantress": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 11
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 6
+    },
+    "Goblins": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 19
+    },
+    "Landstill": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Machine Head": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 1
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 6
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 0
+    },
+    "Tide Control": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 5
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 14
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 6
+    },
+    "The Rock": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 3
+    },
+    "Sligh": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 29
+    },
+    "Stasis": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 8
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 2
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 9
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    }
+  },
+  "Devourer Combo": {
+    "Black/White Control": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Elves": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 7
+    },
+    "Enchantress": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 4
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    },
+    "Goblins": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 9
+    },
+    "Landstill": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 7
+    },
+    "Machine Head": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 4
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 9
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Tide Control": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 6
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Replenish": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 5
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 3
+    },
+    "The Rock": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 2
+    },
+    "Sligh": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 17
+    },
+    "Stasis": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 5
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 14
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 6
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 6
+    }
+  },
+  "Elves": {
+    "Black/White Control": {
+      "archetype_1_wins": 22,
+      "archetype_2_wins": 6
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 5
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 10
+    },
+    "Enchantress": {
+      "archetype_1_wins": 24,
+      "archetype_2_wins": 13
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 6
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 14
+    },
+    "Goblins": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 37
+    },
+    "Landstill": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 17
+    },
+    "Machine Head": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 8
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 36,
+      "archetype_2_wins": 15
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 24,
+      "archetype_2_wins": 10
+    },
+    "Reanimator": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 29
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 21
+    },
+    "The Rock": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 12
+    },
+    "Sligh": {
+      "archetype_1_wins": 59,
+      "archetype_2_wins": 71
+    },
+    "Stasis": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 3
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 9
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 11
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 31,
+      "archetype_2_wins": 16
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 14
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 7
+    }
+  },
+  "Enchantress": {
+    "Black/White Control": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 6
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 1
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 9
+    },
+    "Elves": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 24
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 10
+    },
+    "Goblins": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 24
+    },
+    "Landstill": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 5
+    },
+    "Machine Head": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 2
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 5
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 25,
+      "archetype_2_wins": 15
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 11
+    },
+    "Reanimator": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 33
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 17
+    },
+    "The Rock": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 13
+    },
+    "Sligh": {
+      "archetype_1_wins": 49,
+      "archetype_2_wins": 28
+    },
+    "Stasis": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 6
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 10
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 23,
+      "archetype_2_wins": 7
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 29
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 12
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 1
+    }
+  },
+  "Blue/White Flippi": {
+    "Black/White Control": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 8
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 2
+    },
+    "Elves": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 8
+    },
+    "Enchantress": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 1
+    },
+    "Goblins": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 9
+    },
+    "Landstill": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 11
+    },
+    "Machine Head": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 1
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 4
+    },
+    "Tide Control": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 4
+    },
+    "Reanimator": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 0
+    },
+    "Replenish": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 11
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 3
+    },
+    "The Rock": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 6
+    },
+    "Sligh": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 18
+    },
+    "Stasis": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 4
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 2
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 9
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 11
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 0
+    }
+  },
+  "Gro-a-tog": {
+    "Black/White Control": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 12
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 4
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Elves": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 19
+    },
+    "Enchantress": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 10
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 5
+    },
+    "Goblins": {
+      "archetype_1_wins": 27,
+      "archetype_2_wins": 15
+    },
+    "Landstill": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Machine Head": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 5
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 7
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 12
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Replenish": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 14
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 15
+    },
+    "The Rock": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 11
+    },
+    "Sligh": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 34
+    },
+    "Stasis": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 3
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 5
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 14
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 12
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 11
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 2
+    }
+  },
+  "Goblins": {
+    "Black/White Control": {
+      "archetype_1_wins": 28,
+      "archetype_2_wins": 13
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 5
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 14
+    },
+    "Elves": {
+      "archetype_1_wins": 37,
+      "archetype_2_wins": 14
+    },
+    "Enchantress": {
+      "archetype_1_wins": 24,
+      "archetype_2_wins": 18
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 10
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 27
+    },
+    "Landstill": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 26
+    },
+    "Machine Head": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 10
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 29,
+      "archetype_2_wins": 34
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 20
+    },
+    "Reanimator": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    },
+    "Replenish": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 32
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 34
+    },
+    "The Rock": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 12
+    },
+    "Sligh": {
+      "archetype_1_wins": 58,
+      "archetype_2_wins": 74
+    },
+    "Stasis": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 11
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 10
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 14
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 29
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 16
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 16
+    }
+  },
+  "Landstill": {
+    "Black/White Control": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 2
+    },
+    "Elves": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 20
+    },
+    "Enchantress": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 19
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 5
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Goblins": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 15
+    },
+    "Machine Head": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 23
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Tide Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 15
+    },
+    "Reanimator": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Replenish": {
+      "archetype_1_wins": 23,
+      "archetype_2_wins": 14
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 14
+    },
+    "The Rock": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 25,
+      "archetype_2_wins": 54
+    },
+    "Stasis": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 15
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 11
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 24
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 7
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 5
+    }
+  },
+  "Machine Head": {
+    "Black/White Control": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 8
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 7
+    },
+    "Enchantress": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 7
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 1
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 7
+    },
+    "Goblins": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 8
+    },
+    "Landstill": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 13
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 1
+    },
+    "Tide Control": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 4
+    },
+    "Reanimator": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 10
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 11
+    },
+    "The Rock": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 4
+    },
+    "Sligh": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 32
+    },
+    "Stasis": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 7
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 9
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 11
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    }
+  },
+  "Mono Black Clerics": {
+    "Black/White Control": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 4
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 4
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 9
+    },
+    "Enchantress": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 7
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Goblins": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Landstill": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    },
+    "Machine Head": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 4
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 0
+    },
+    "Tide Control": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 2
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 0
+    },
+    "Replenish": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 5
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 6
+    },
+    "The Rock": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Sligh": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 11
+    },
+    "Stasis": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 0
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 6
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 6
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    }
+  },
+  "Mono Blue Dreadnought": {
+    "Black/White Control": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 13
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 10
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 36
+    },
+    "Enchantress": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 25
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 12
+    },
+    "Goblins": {
+      "archetype_1_wins": 34,
+      "archetype_2_wins": 29
+    },
+    "Landstill": {
+      "archetype_1_wins": 23,
+      "archetype_2_wins": 26
+    },
+    "Machine Head": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 7
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 8
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 0
+    },
+    "Tide Control": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 19
+    },
+    "Reanimator": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 3
+    },
+    "Replenish": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 17
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 10
+    },
+    "The Rock": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 12
+    },
+    "Sligh": {
+      "archetype_1_wins": 85,
+      "archetype_2_wins": 21
+    },
+    "Stasis": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 7
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 7
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 16
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 27,
+      "archetype_2_wins": 26
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 23
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    }
+  },
+  "Mono Blue Storm": {
+    "Black/White Control": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 1
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 0
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Enchantress": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 8
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 0
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 10
+    },
+    "Goblins": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 14
+    },
+    "Landstill": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Machine Head": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 4
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 7
+    },
+    "Tide Control": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Replenish": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 8
+    },
+    "The Rock": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Sligh": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 14
+    },
+    "Stasis": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 1
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 8
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    }
+  },
+  "Tide Control": {
+    "Black/White Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 4
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 0
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 0
+    },
+    "Elves": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 24
+    },
+    "Enchantress": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 11
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 6
+    },
+    "Goblins": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 21
+    },
+    "Landstill": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 10
+    },
+    "Machine Head": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 3
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 7
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 18
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Reanimator": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 3
+    },
+    "Replenish": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 8
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 9
+    },
+    "The Rock": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 42,
+      "archetype_2_wins": 31
+    },
+    "Stasis": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 5
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 3
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 14
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 19
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 10
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 1
+    }
+  },
+  "Reanimator": {
+    "Black/White Control": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 8
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 2
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Elves": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Enchantress": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 10
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 5
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    },
+    "Goblins": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Landstill": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Machine Head": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 2
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 8
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 3
+    },
+    "Replenish": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 11
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 6
+    },
+    "The Rock": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Sligh": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 22
+    },
+    "Stasis": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 2
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 5
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 5
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 1
+    }
+  },
+  "Replenish": {
+    "Black/White Control": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 5
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 7
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 7
+    },
+    "Elves": {
+      "archetype_1_wins": 29,
+      "archetype_2_wins": 20
+    },
+    "Enchantress": {
+      "archetype_1_wins": 33,
+      "archetype_2_wins": 5
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 4
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 21
+    },
+    "Goblins": {
+      "archetype_1_wins": 32,
+      "archetype_2_wins": 17
+    },
+    "Landstill": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 23
+    },
+    "Machine Head": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 4
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 4
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 21
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 12
+    },
+    "Reanimator": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 5
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 8
+    },
+    "The Rock": {
+      "archetype_1_wins": 22,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 44,
+      "archetype_2_wins": 46
+    },
+    "Stasis": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 14
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 14
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 6
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 20
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 18
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 9
+    }
+  },
+  "Red/Green Oath Ponza": {
+    "Black/White Control": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 14
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 4
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 8
+    },
+    "Elves": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 17
+    },
+    "Enchantress": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 12
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 2
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 7
+    },
+    "Goblins": {
+      "archetype_1_wins": 34,
+      "archetype_2_wins": 13
+    },
+    "Landstill": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 8
+    },
+    "Machine Head": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 2
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 4
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 15
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 5
+    },
+    "Tide Control": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 10
+    },
+    "Reanimator": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 8
+    },
+    "Replenish": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 14
+    },
+    "The Rock": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 44,
+      "archetype_2_wins": 55
+    },
+    "Stasis": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 7
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 6
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 13
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 14
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 15
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 8
+    }
+  },
+  "The Rock": {
+    "Black/White Control": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 8
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 7
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 7
+    },
+    "Elves": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 19
+    },
+    "Enchantress": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 14
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 7
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 10
+    },
+    "Goblins": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 20
+    },
+    "Landstill": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 5
+    },
+    "Machine Head": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 8
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 8
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Tide Control": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 16
+    },
+    "Reanimator": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Replenish": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 22
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 20
+    },
+    "Sligh": {
+      "archetype_1_wins": 28,
+      "archetype_2_wins": 45
+    },
+    "Stasis": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 9
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 12
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 5
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 18
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 8
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    }
+  },
+  "Sligh": {
+    "Black/White Control": {
+      "archetype_1_wins": 47,
+      "archetype_2_wins": 33
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 29,
+      "archetype_2_wins": 17
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 17,
+      "archetype_2_wins": 14
+    },
+    "Elves": {
+      "archetype_1_wins": 71,
+      "archetype_2_wins": 59
+    },
+    "Enchantress": {
+      "archetype_1_wins": 28,
+      "archetype_2_wins": 49
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 17
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 34,
+      "archetype_2_wins": 20
+    },
+    "Goblins": {
+      "archetype_1_wins": 74,
+      "archetype_2_wins": 58
+    },
+    "Landstill": {
+      "archetype_1_wins": 54,
+      "archetype_2_wins": 25
+    },
+    "Machine Head": {
+      "archetype_1_wins": 32,
+      "archetype_2_wins": 8
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 10
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 85
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 5
+    },
+    "Tide Control": {
+      "archetype_1_wins": 31,
+      "archetype_2_wins": 42
+    },
+    "Reanimator": {
+      "archetype_1_wins": 22,
+      "archetype_2_wins": 15
+    },
+    "Replenish": {
+      "archetype_1_wins": 46,
+      "archetype_2_wins": 44
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 55,
+      "archetype_2_wins": 44
+    },
+    "The Rock": {
+      "archetype_1_wins": 45,
+      "archetype_2_wins": 28
+    },
+    "Stasis": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 35
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 28
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 37
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 46,
+      "archetype_2_wins": 57
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 31,
+      "archetype_2_wins": 22
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 25
+    }
+  },
+  "Stasis": {
+    "Black/White Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 2
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 14
+    },
+    "Enchantress": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 4
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 3
+    },
+    "Goblins": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 13
+    },
+    "Landstill": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 1
+    },
+    "Machine Head": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 5
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 16
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 0
+    },
+    "Tide Control": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 10
+    },
+    "Reanimator": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 6
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 13
+    },
+    "The Rock": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 35,
+      "archetype_2_wins": 16
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 6
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 7
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 10
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 9
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 2
+    }
+  },
+  "Survival Madness": {
+    "Black/White Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 9
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 2
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Elves": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 20
+    },
+    "Enchantress": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 9
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 9
+    },
+    "Goblins": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 13
+    },
+    "Landstill": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 10
+    },
+    "Machine Head": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 10
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 4
+    },
+    "Reanimator": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 10
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 16
+    },
+    "The Rock": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 7
+    },
+    "Sligh": {
+      "archetype_1_wins": 28,
+      "archetype_2_wins": 16
+    },
+    "Stasis": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 3
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 7
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 7
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 5
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 5
+    }
+  },
+  "Survival Rock": {
+    "Black/White Control": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 5
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 3
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 6
+    },
+    "Elves": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 14
+    },
+    "Enchantress": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 23
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 1
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 4
+    },
+    "Goblins": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 18
+    },
+    "Landstill": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 9
+    },
+    "Machine Head": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 1
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 9
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 16
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Tide Control": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 12
+    },
+    "Reanimator": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Replenish": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 15
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 13,
+      "archetype_2_wins": 17
+    },
+    "The Rock": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 4
+    },
+    "Sligh": {
+      "archetype_1_wins": 37,
+      "archetype_2_wins": 26
+    },
+    "Stasis": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 3
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 4
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 21,
+      "archetype_2_wins": 12
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 6
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 3
+    }
+  },
+  "Terrageddon": {
+    "Black/White Control": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 6
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 4
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 4
+    },
+    "Elves": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 31
+    },
+    "Enchantress": {
+      "archetype_1_wins": 29,
+      "archetype_2_wins": 16
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 4
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 15
+    },
+    "Goblins": {
+      "archetype_1_wins": 29,
+      "archetype_2_wins": 18
+    },
+    "Landstill": {
+      "archetype_1_wins": 24,
+      "archetype_2_wins": 4
+    },
+    "Machine Head": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 5
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 6
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 26,
+      "archetype_2_wins": 27
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 2
+    },
+    "Tide Control": {
+      "archetype_1_wins": 19,
+      "archetype_2_wins": 13
+    },
+    "Reanimator": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 5
+    },
+    "Replenish": {
+      "archetype_1_wins": 20,
+      "archetype_2_wins": 21
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 9
+    },
+    "The Rock": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 7
+    },
+    "Sligh": {
+      "archetype_1_wins": 57,
+      "archetype_2_wins": 46
+    },
+    "Stasis": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 7
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 12
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 21
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 14
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 5
+    }
+  },
+  "Blue/Black Psychatog": {
+    "Black/White Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 7
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 2
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 5
+    },
+    "Elves": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 11
+    },
+    "Enchantress": {
+      "archetype_1_wins": 12,
+      "archetype_2_wins": 12
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 5
+    },
+    "Goblins": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 20
+    },
+    "Landstill": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 11
+    },
+    "Machine Head": {
+      "archetype_1_wins": 11,
+      "archetype_2_wins": 8
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 4
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 23,
+      "archetype_2_wins": 13
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 1
+    },
+    "Tide Control": {
+      "archetype_1_wins": 10,
+      "archetype_2_wins": 12
+    },
+    "Reanimator": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Replenish": {
+      "archetype_1_wins": 18,
+      "archetype_2_wins": 5
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 15,
+      "archetype_2_wins": 8
+    },
+    "The Rock": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 13
+    },
+    "Sligh": {
+      "archetype_1_wins": 22,
+      "archetype_2_wins": 31
+    },
+    "Stasis": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 7
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 19
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 11
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 14,
+      "archetype_2_wins": 16
+    },
+    "Blue/White Dreadnought": {
+      "archetype_1_wins": 4,
+      "archetype_2_wins": 5
+    }
+  },
+  "Blue/White Dreadnought": {
+    "Black/White Control": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 7
+    },
+    "Deadguy Ale": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 3
+    },
+    "Devourer Combo": {
+      "archetype_1_wins": 6,
+      "archetype_2_wins": 0
+    },
+    "Elves": {
+      "archetype_1_wins": 7,
+      "archetype_2_wins": 7
+    },
+    "Enchantress": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 5
+    },
+    "Blue/White Flippi": {
+      "archetype_1_wins": 0,
+      "archetype_2_wins": 3
+    },
+    "Gro-a-tog": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 8
+    },
+    "Goblins": {
+      "archetype_1_wins": 16,
+      "archetype_2_wins": 7
+    },
+    "Landstill": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 4
+    },
+    "Machine Head": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Mono Black Clerics": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 2
+    },
+    "Mono Blue Dreadnought": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 3
+    },
+    "Mono Blue Storm": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 1
+    },
+    "Tide Control": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 8
+    },
+    "Reanimator": {
+      "archetype_1_wins": 1,
+      "archetype_2_wins": 1
+    },
+    "Replenish": {
+      "archetype_1_wins": 9,
+      "archetype_2_wins": 6
+    },
+    "Red/Green Oath Ponza": {
+      "archetype_1_wins": 8,
+      "archetype_2_wins": 8
+    },
+    "The Rock": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 5
+    },
+    "Sligh": {
+      "archetype_1_wins": 25,
+      "archetype_2_wins": 14
+    },
+    "Stasis": {
+      "archetype_1_wins": 2,
+      "archetype_2_wins": 4
+    },
+    "Survival Madness": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 6
+    },
+    "Survival Rock": {
+      "archetype_1_wins": 3,
+      "archetype_2_wins": 2
+    },
+    "Terrageddon": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 6
+    },
+    "Blue/Black Psychatog": {
+      "archetype_1_wins": 5,
+      "archetype_2_wins": 4
+    }
+  }
+}

@@ -67,11 +67,15 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         let wins = 0;
         let losses = 0;
 
+        // Only count matches against currently visible archetypes
         for (let villain of archetypes) {
+            // Skip self-matches
+            if (hero === villain) continue;
+            
             const matchup = matchupData[hero]?.[villain];
             if (matchup) {
-                wins += matchup.archetype_1_wins;
-                losses += matchup.archetype_2_wins;
+                wins += matchup.archetype_1_wins || 0;
+                losses += matchup.archetype_2_wins || 0;
             }
         }
 

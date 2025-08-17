@@ -8,33 +8,77 @@ import {
 import AppSidebar from '@/components/AppSidebar'
 
 async function fetchData(): Promise<ResultsData | null> {
-  const url = `https://mtg-data.fly.dev/matchup/cached`
   try {
-      const response = await fetch(url);
+      console.log('Fetching data from sample-data.json...');
+      const response = await fetch('/sample-data.json');
       if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
       }
-      const data = await response.json();
-      return data;
+      const rawData = await response.json();
+      console.log('Received raw data:', rawData);
+      
+      // Transform the data into the expected format
+      const transformedData: ResultsData = {
+          results: Object.fromEntries(
+              Object.entries(rawData).map(([archetype1, matches]) => [
+                  archetype1,
+                  Object.fromEntries(
+                      Object.entries(matches as Record<string, any>).map(([archetype2, stats]) => [
+                          archetype2,
+                          {
+                              archetype_1_wins: stats.archetype_1_wins || 0,
+                              archetype_2_wins: stats.archetype_2_wins || 0
+                          }
+                      ])
+                  )
+              ])
+          )
+      };
+      
+      console.log('Transformed data:', transformedData);
+      return transformedData;
   } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(errorMessage);
+      console.error('Error fetching data:', errorMessage);
       return null;
   }
 }
 
 async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | null> {
-  const url = `https://mtg-data.fly.dev/archetype/overallrecord?archetype=${archetype}`
   try {
-      const response = await fetch(url);
+      console.log('Fetching win rate for archetype:', archetype);
+      const response = await fetch('/sample-data.json');
       if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
       }
       const data = await response.json();
-      return data;
+      
+      // Extract win rate from the matchup data for visible archetypes only
+      const archData = data[archetype];
+      if (!archData) return null;
+      
+      let totalWins = 0;
+      let totalLosses = 0;
+      
+      // Get all visible archetypes from the matchupData state
+      const visibleArchetypes = Object.keys(matchupData);
+      
+      Object.entries(archData).forEach(([opponent, stats]: [string, any]) => {
+          // Only count matches against visible archetypes
+          if (visibleArchetypes.includes(opponent)) {
+              totalWins += stats.archetype_1_wins || 0;
+              totalLosses += stats.archetype_2_wins || 0;
+          }
+      });
+      
+      console.log('Win rate data for', archetype, ':', { wins: totalWins, losses: totalLosses });
+      return {
+          wins: totalWins,
+          losses: totalLosses
+      };
   } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(errorMessage);
+      console.error('Error fetching win rate:', errorMessage);
       return null;
   }
 }
