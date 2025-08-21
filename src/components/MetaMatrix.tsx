@@ -29,14 +29,48 @@ interface MetaMatrixProps {
     archetypeRecords: Record<string, ArchetypeRecord>;
     archetypes: string[];
     winrateOption: string;
+    timeFrame?: string;
+    startDate?: string;
+    endDate?: string;
+    isFetchingInBackground?: boolean;
 }
 
-function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }: MetaMatrixProps) {
+function MetaMatrix({ 
+    matchupData, 
+    archetypeRecords, 
+    archetypes, 
+    winrateOption,
+    timeFrame,
+    startDate,
+    endDate,
+    isFetchingInBackground
+}: MetaMatrixProps) {
 
     const getWinrateColor = (winrate: number) => {
         const normalizedWinrate = winrate / 100;
         const hue = normalizedWinrate * 120;
         return `hsl(${hue}, 70%, 45%)`;
+    };
+
+    const formatTimeFrame = (tf?: string) => {
+        if (!tf) return '';
+        const frameMap: Record<string, string> = {
+            '1_month': '1 Month',
+            '3_months': '3 Months',
+            '6_months': '6 Months',
+            '1_year': '1 Year',
+            'all_time': 'All Time'
+        };
+        return frameMap[tf] || tf;
+    };
+
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return '';
+        try {
+            return new Date(dateStr).toLocaleDateString();
+        } catch {
+            return dateStr;
+        }
     };
 
     const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | null => {
@@ -60,8 +94,29 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         };
     };
 
-    if (archetypes.length === 0) {
+    // If we have no archetypes and we're not fetching in background, show loading
+    if (archetypes.length === 0 && !isFetchingInBackground) {
         return <div>Loading...</div>;
+    }
+    
+    // If we have no archetypes but we are fetching in background, show a message
+    if (archetypes.length === 0 && isFetchingInBackground) {
+        return (
+            <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
+                <div className="bg-muted p-3 border-b text-center">
+                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                        {formatTimeFrame(timeFrame)}
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                    </h3>
+                </div>
+                <div className="flex items-center justify-center p-8">
+                    <div className="text-center">
+                        <div className="w-8 h-8 border-4 border-current border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p>Loading {formatTimeFrame(timeFrame)} data...</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const filteredWinrate = (hero: string): {winrate: number, wins: number, losses: number} | null => {
@@ -87,6 +142,22 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
 
     return (
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
+            {/* Time Frame Header */}
+            {timeFrame && (
+                <div className="bg-muted p-3 border-b text-center">
+                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                        {formatTimeFrame(timeFrame)}
+                        {isFetchingInBackground && (
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                        )}
+                    </h3>
+                    {startDate && endDate && timeFrame !== 'all_time' && (
+                        <p className="text-sm text-muted-foreground">
+                            {formatDate(startDate)} - {formatDate(endDate)}
+                        </p>
+                    )}
+                </div>
+            )}
             <Table className='border-collapse'>
                 <TableHeader>
                     <TableRow>

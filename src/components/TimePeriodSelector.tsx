@@ -1,47 +1,43 @@
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-
-export type TimePeriod = '1m' | '3m' | '6m' | '1y' | 'all';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { TimeFrame } from "@/lib/api-client"
 
 interface TimePeriodSelectorProps {
-  value: TimePeriod;
-  onChange: (value: TimePeriod) => void;
+    selectedTimeFrame: TimeFrame;
+    onTimeFrameChange: (timeFrame: TimeFrame) => void;
 }
 
-export function TimePeriodSelector({ value, onChange }: TimePeriodSelectorProps) {
-  console.log('Current time period:', value);
-  return (
-    <div className="flex flex-col gap-2">
-      <Label className="text-lg font-semibold">Time Period</Label>
-      <RadioGroup
-        value={value}
-        onValueChange={(val) => {
-          console.log('Changing time period to:', val);
-          onChange(val as TimePeriod);
-        }}
-        className="flex gap-4"
-      >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="1m" id="1m" />
-          <Label htmlFor="1m">1 Month</Label>
+function TimePeriodSelector({ selectedTimeFrame, onTimeFrameChange }: TimePeriodSelectorProps) {
+    return (
+        <div className="space-y-3">
+            <RadioGroup 
+                value={selectedTimeFrame} 
+                onValueChange={(value) => onTimeFrameChange(value as TimeFrame)}
+                className="space-y-2"
+            >
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="1_month" id="1_month" />
+                    <Label htmlFor="1_month" className="text-sm">1 Month</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="3_months" id="3_months" />
+                    <Label htmlFor="3_months" className="text-sm">3 Months</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="6_months" id="6_months" />
+                    <Label htmlFor="6_months" className="text-sm">6 Months</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="1_year" id="1_year" />
+                    <Label htmlFor="1_year" className="text-sm">1 Year</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="all_time" id="all_time" />
+                    <Label htmlFor="all_time" className="text-sm">All Time</Label>
+                </div>
+            </RadioGroup>
         </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="3m" id="3m" />
-          <Label htmlFor="3m">3 Months</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="6m" id="6m" />
-          <Label htmlFor="6m">6 Months</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="1y" id="1y" />
-          <Label htmlFor="1y">1 Year</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="all" id="all" />
-          <Label htmlFor="all">All Time</Label>
-        </div>
-      </RadioGroup>
-    </div>
-  )
+    )
 }
+
+export default TimePeriodSelector

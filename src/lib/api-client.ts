@@ -15,6 +15,9 @@ export interface MatchupData {
 export interface ArchetypeMatrix {
   archetypes: string[];
   matrix: Record<string, Record<string, MatchupData>>;
+  time_frame: string;
+  start_date?: string;
+  end_date?: string;
 }
 
 export interface APIResponse<T> {
@@ -23,9 +26,17 @@ export interface APIResponse<T> {
   data: T;
 }
 
-export interface WinLossRecord extends ArchetypeRecord {
+export interface WinLossRecord {
   archetype: string;
+  wins: number;
+  losses: number;
+  draws: number;
+  total_matches: number;
+  win_rate: number;
 }
+
+// Time frame options
+export type TimeFrame = '1_month' | '3_months' | '6_months' | '1_year' | 'all_time';
 
 const JWT_TOKEN = import.meta.env.VITE_JWT_TOKEN;
 
@@ -46,7 +57,10 @@ async function fetchJson<T>(endpoint: string): Promise<T> {
 }
 
 export const api = {
-  getMatchupData: () => fetchJson<ArchetypeMatrix>('/analysis/archetype-matrix'),
+  getMatchupData: (timeFrame?: TimeFrame) => {
+    const params = timeFrame && timeFrame !== 'all_time' ? `?time_frame=${timeFrame}` : '';
+    return fetchJson<ArchetypeMatrix>(`/analysis/archetype-matrix${params}`);
+  },
   getArchetypeWinRate: (archetype: string) => 
     fetchJson<WinLossRecord[]>(`/analysis/win-loss-records?archetype=${archetype}`)
     .then(records => {
