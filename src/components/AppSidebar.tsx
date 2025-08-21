@@ -23,6 +23,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucide-react"
 import swampLogo from "@/assets/swamp-white.svg"
 import TimePeriodSelector from "./TimePeriodSelector"
+import PercentageFilter from "./PercentageFilter"
 import { TimeFrame } from "@/lib/api-client"
 
 interface AppSidebarProps {
@@ -36,6 +37,8 @@ interface AppSidebarProps {
     setWinrateOption: (method: 'total' | 'filtered') => void;
     selectedTimeFrame: TimeFrame;
     onTimeFrameChange: (timeFrame: TimeFrame) => void;
+    minPercentage: number | undefined;
+    onPercentageChange: (percentage: number | undefined) => void;
 }
 
 function AppSidebar({ 
@@ -48,7 +51,9 @@ function AppSidebar({
     winrateOption,
     setWinrateOption,
     selectedTimeFrame,
-    onTimeFrameChange
+    onTimeFrameChange,
+    minPercentage,
+    onPercentageChange
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -213,6 +218,27 @@ function AppSidebar({
                                         <TimePeriodSelector
                                             selectedTimeFrame={selectedTimeFrame}
                                             onTimeFrameChange={onTimeFrameChange}
+                                        />
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                    <Collapsible className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                    <Filter />
+                                    Percentage Filter
+                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <PercentageFilter
+                                            minPercentage={minPercentage}
+                                            onPercentageChange={onPercentageChange}
                                         />
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>

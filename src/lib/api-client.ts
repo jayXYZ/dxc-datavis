@@ -18,6 +18,7 @@ export interface ArchetypeMatrix {
   time_frame: string;
   start_date?: string;
   end_date?: string;
+  min_percentage?: number;
 }
 
 export interface APIResponse<T> {
@@ -57,9 +58,17 @@ async function fetchJson<T>(endpoint: string): Promise<T> {
 }
 
 export const api = {
-  getMatchupData: (timeFrame?: TimeFrame) => {
-    const params = timeFrame && timeFrame !== 'all_time' ? `?time_frame=${timeFrame}` : '';
-    return fetchJson<ArchetypeMatrix>(`/analysis/archetype-matrix${params}`);
+  getMatchupData: (timeFrame?: TimeFrame, minPercentage?: number) => {
+    const params = new URLSearchParams();
+    if (timeFrame && timeFrame !== 'all_time') {
+      params.append('time_frame', timeFrame);
+    }
+    if (minPercentage !== undefined && minPercentage > 0) {
+      params.append('min_percentage', minPercentage.toString());
+    }
+    const queryString = params.toString();
+    const endpoint = `/analysis/archetype-matrix${queryString ? `?${queryString}` : ''}`;
+    return fetchJson<ArchetypeMatrix>(endpoint);
   },
   getArchetypeWinRate: (archetype: string) => 
     fetchJson<WinLossRecord[]>(`/analysis/win-loss-records?archetype=${archetype}`)

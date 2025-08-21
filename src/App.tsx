@@ -20,11 +20,12 @@ interface CachedData {
   timeFrame: string;
   startDate?: string;
   endDate?: string;
+  minPercentage?: number;
 }
 
-async function fetchData(timeFrame?: TimeFrame): Promise<ArchetypeMatrix | FetchError> {
+async function fetchData(timeFrame?: TimeFrame, minPercentage?: number): Promise<ArchetypeMatrix | FetchError> {
   try {
-    return await api.getMatchupData(timeFrame);
+    return await api.getMatchupData(timeFrame, minPercentage);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to fetch matchup data';
     console.error(message);
@@ -51,12 +52,18 @@ function App() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>('total');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
+  const [minPercentage, setMinPercentage] = useState<number | undefined>(undefined);
   const [timeFrameData, setTimeFrameData] = useState<{timeFrame: string, startDate?: string, endDate?: string}>({timeFrame: 'all_time'});
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingInBackground, setIsFetchingInBackground] = useState(false);
   
-  // Cache for storing data by time frame
-  const [dataCache, setDataCache] = useState<Record<TimeFrame, CachedData>>({} as Record<TimeFrame, CachedData>);
+  // Cache for storing data by time frame and percentage filter
+  const [dataCache, setDataCache] = useState<Record<string, CachedData>>({});
+
+  // Helper function to generate cache keys
+  const getCacheKey = (timeFrame: TimeFrame, percentage?: number) => {
+    return percentage !== undefined ? `${timeFrame}-${percentage}` : `${timeFrame}-none`;
+  };
 
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
     return [...archList].sort((a, b) => {
@@ -101,13 +108,23 @@ function App() {
     setVisibleArchetypes(sortArchetypes(sortMethod, sortDirection, newVisible));
   };
 
+  // Function to handle percentage filter changes
+  const handlePercentageChange = async (newPercentage: number | undefined) => {
+    setMinPercentage(newPercentage);
+    
+    // Fetch new data in background without showing loading screen
+    // Pass the new percentage value directly to avoid using stale state
+    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage);
+  };
+
   // New function to handle time frame changes without refresh
   const handleTimeFrameChange = async (newTimeFrame: TimeFrame) => {
     setSelectedTimeFrame(newTimeFrame);
     
-    // Check if we have cached data for this time frame
-    if (dataCache[newTimeFrame]) {
-      const cachedData = dataCache[newTimeFrame];
+    // Check if we have cached data for this time frame and percentage filter
+    const cacheKey = getCacheKey(newTimeFrame, minPercentage);
+    if (dataCache[cacheKey]) {
+      const cachedData = dataCache[cacheKey];
       
       // Update the matrix in place using cached data
       setMatchupData(cachedData.matrix);
@@ -129,18 +146,19 @@ function App() {
       });
       
       // Fetch data in background
-      fetchAndSetDataInBackground(newTimeFrame);
+      fetchAndSetDataInBackground(newTimeFrame, minPercentage);
     }
   };
 
   const [error, setError] = useState<string | null>(null);
 
   // Function to fetch data in background without showing loading screen
-  const fetchAndSetDataInBackground = async (timeFrame: TimeFrame) => {
+  const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number) => {
     setIsFetchingInBackground(true);
     try {
-      // Fetch matchup data with selected time frame
-      const data = await fetchData(timeFrame);
+      // Fetch matchup data with selected time frame and percentage filter
+      // Use the passed percentage parameter or fall back to state value
+      const data = await fetchData(timeFrame, percentage !== undefined ? percentage : minPercentage);
       if ('message' in data) {
         setError(data.message);
         return;
@@ -195,12 +213,13 @@ function App() {
         archetypes: sortedArchetypes,
         timeFrame: data.time_frame,
         startDate: data.start_date,
-        endDate: data.end_date
+        endDate: data.end_date,
+        minPercentage: percentage !== undefined ? percentage : minPercentage
       };
       
       setDataCache(prev => ({
         ...prev,
-        [timeFrame]: cacheEntry
+        [getCacheKey(timeFrame, percentage !== undefined ? percentage : minPercentage)]: cacheEntry
       }));
 
       // Update the current display with the new data
@@ -221,8 +240,8 @@ function App() {
     setIsLoading(true);
     setError(null);
     
-    // Fetch matchup data with selected time frame
-    const data = await fetchData(timeFrame);
+    // Fetch matchup data with selected time frame and percentage filter
+    const data = await fetchData(timeFrame, minPercentage);
     if ('message' in data) {
       setError(data.message);
       setIsLoading(false);
@@ -279,12 +298,13 @@ function App() {
       archetypes: sortedArchetypes,
       timeFrame: data.time_frame,
       startDate: data.start_date,
-      endDate: data.end_date
+      endDate: data.end_date,
+      minPercentage: minPercentage
     };
     
     setDataCache(prev => ({
       ...prev,
-      [timeFrame]: cacheEntry
+      [getCacheKey(timeFrame, minPercentage)]: cacheEntry
     }));
 
     setMatchupData(matrixData);
@@ -322,6 +342,8 @@ function App() {
             setWinrateOption={setWinrateOption}
             selectedTimeFrame={selectedTimeFrame}
             onTimeFrameChange={handleTimeFrameChange}
+            minPercentage={minPercentage}
+            onPercentageChange={handlePercentageChange}
           />
           <MetaMatrix 
             matchupData={matchupData}
