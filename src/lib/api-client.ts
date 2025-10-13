@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mtg-data.fly.dev';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mtg-data-ai.fly.dev';
 
 export interface ArchetypeRecord {
   wins: number;
