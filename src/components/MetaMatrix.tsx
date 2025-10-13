@@ -64,6 +64,13 @@ function MetaMatrix({
         return frameMap[tf] || tf;
     };
 
+    const getTimeFrameDisplay = () => {
+        if (startDate && endDate) {
+            return 'Custom Range';
+        }
+        return formatTimeFrame(timeFrame);
+    };
+
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return '';
         try {
@@ -105,14 +112,14 @@ function MetaMatrix({
             <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
                 <div className="bg-muted p-3 border-b text-center">
                     <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
-                        {formatTimeFrame(timeFrame)}
+                        {getTimeFrameDisplay()}
                         <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
                     </h3>
                 </div>
                 <div className="flex items-center justify-center p-8">
                     <div className="text-center">
                         <div className="w-8 h-8 border-4 border-current border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                        <p>Loading {formatTimeFrame(timeFrame)} data...</p>
+                        <p>Loading {getTimeFrameDisplay()} data...</p>
                     </div>
                 </div>
             </div>
@@ -146,12 +153,12 @@ function MetaMatrix({
             {timeFrame && (
                 <div className="bg-muted p-3 border-b text-center">
                     <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
-                        {formatTimeFrame(timeFrame)}
+                        {getTimeFrameDisplay()}
                         {isFetchingInBackground && (
                             <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
                         )}
                     </h3>
-                    {startDate && endDate && timeFrame !== 'all_time' && (
+                    {startDate && endDate && (
                         <p className="text-sm text-muted-foreground">
                             {formatDate(startDate)} - {formatDate(endDate)}
                         </p>

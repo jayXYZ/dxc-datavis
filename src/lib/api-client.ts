@@ -58,13 +58,19 @@ async function fetchJson<T>(endpoint: string): Promise<T> {
 }
 
 export const api = {
-  getMatchupData: (timeFrame?: TimeFrame, minPercentage?: number) => {
+  getMatchupData: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
     const params = new URLSearchParams();
     if (timeFrame && timeFrame !== 'all_time') {
       params.append('time_frame', timeFrame);
     }
     if (minPercentage !== undefined && minPercentage > 0) {
       params.append('min_percentage', minPercentage.toString());
+    }
+    if (startDate) {
+      params.append('start_date', startDate);
+    }
+    if (endDate) {
+      params.append('end_date', endDate);
     }
     const queryString = params.toString();
     const endpoint = `/analysis/archetype-matrix${queryString ? `?${queryString}` : ''}`;

@@ -39,6 +39,9 @@ interface AppSidebarProps {
     onTimeFrameChange: (timeFrame: TimeFrame) => void;
     minPercentage: number | undefined;
     onPercentageChange: (percentage: number | undefined) => void;
+    customStartDate?: string;
+    customEndDate?: string;
+    onCustomDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void;
 }
 
 function AppSidebar({ 
@@ -53,7 +56,10 @@ function AppSidebar({
     selectedTimeFrame,
     onTimeFrameChange,
     minPercentage,
-    onPercentageChange
+    onPercentageChange,
+    customStartDate,
+    customEndDate,
+    onCustomDateRangeChange
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -218,6 +224,9 @@ function AppSidebar({
                                         <TimePeriodSelector
                                             selectedTimeFrame={selectedTimeFrame}
                                             onTimeFrameChange={onTimeFrameChange}
+                                            customStartDate={customStartDate}
+                                            customEndDate={customEndDate}
+                                            onCustomDateRangeChange={onCustomDateRangeChange}
                                         />
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
