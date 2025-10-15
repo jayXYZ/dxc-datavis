@@ -52,7 +52,7 @@ function App() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>('total');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
-  const [minPercentage, setMinPercentage] = useState<number | undefined>(undefined);
+  const [minPercentage, setMinPercentage] = useState<number | undefined>(2);
   const [customStartDate, setCustomStartDate] = useState<string | undefined>(undefined);
   const [customEndDate, setCustomEndDate] = useState<string | undefined>(undefined);
   const [timeFrameData, setTimeFrameData] = useState<{timeFrame: string, startDate?: string, endDate?: string}>({timeFrame: 'all_time'});
