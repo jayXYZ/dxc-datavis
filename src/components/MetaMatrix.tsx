@@ -79,17 +79,18 @@ function MetaMatrix({
         }
     };
 
-    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | null => {
+    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | 'no-data' | 'zero-matches' => {
         const matchup = matchupData[hero]?.[villain];
-        if (!matchup) return null;
+        if (!matchup) return 'no-data';
         
         const wins = matchup.wins;
         const losses = matchup.losses;
         const total = wins + losses;
 
+        if (total === 0) return 'zero-matches';
+        
         const wilsonCI = wilson(wins, total)
         
-        if (total === 0) return null;
         return {
             winrate: (wins / total) * 100,
             wins,
@@ -213,16 +214,18 @@ function MetaMatrix({
                                         className='text-center p-2' 
                                         key={villain}
                                         style={{ 
-                                            backgroundColor: result ? getWinrateColor(result.winrate) : undefined,
+                                            backgroundColor: typeof result === 'object' ? getWinrateColor(result.winrate) : undefined,
                                             transition: 'background-color 0.3s ease'
                                         }}
                                     >
-                                        {result ? (
+                                        {typeof result === 'object' ? (
                                             <>
                                                 <p className="text-xs">({result.wilsonLower.toFixed(1)}% - {result.wilsonUpper.toFixed(1)}%)</p>
                                                 <h4 className='font-bold text-xl'>{result.winrate.toFixed(1)}%</h4>
                                                 <p className='text-m'>{result.wins}W - {result.losses}L</p>
                                             </>
+                                        ) : result === 'zero-matches' ? (
+                                            <h4 className="text-gray-500">No Data</h4>
                                         ) : (
                                             <h4>Loading...</h4>
                                         )}
