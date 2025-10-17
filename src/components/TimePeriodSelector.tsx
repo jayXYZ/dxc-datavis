@@ -49,10 +49,6 @@ function TimePeriodSelector({
                 className="space-y-2"
             >
                 <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="1_month" id="1_month" />
-                    <Label htmlFor="1_month" className="text-sm">1 Month</Label>
-                </div>
-                <div className="flex items-center space-x-2">
                     <RadioGroupItem value="3_months" id="3_months" />
                     <Label htmlFor="3_months" className="text-sm">3 Months</Label>
                 </div>

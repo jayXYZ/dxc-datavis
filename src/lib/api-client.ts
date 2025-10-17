@@ -37,7 +37,7 @@ export interface WinLossRecord {
 }
 
 // Time frame options
-export type TimeFrame = '1_month' | '3_months' | '6_months' | '1_year' | 'all_time';
+export type TimeFrame = '3_months' | '6_months' | '1_year' | 'all_time';
 
 const JWT_TOKEN = import.meta.env.VITE_JWT_TOKEN;
 

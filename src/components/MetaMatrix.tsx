@@ -55,7 +55,6 @@ function MetaMatrix({
     const formatTimeFrame = (tf?: string) => {
         if (!tf) return '';
         const frameMap: Record<string, string> = {
-            '1_month': '1 Month',
             '3_months': '3 Months',
             '6_months': '6 Months',
             '1_year': '1 Year',
