@@ -206,10 +206,16 @@ function App() {
       const records: Record<string, ArchetypeRecord> = {};
       const errors: string[] = [];
       
-      // Fetch win rates in parallel
+      // Fetch win rates in parallel with time frame filtering
       await Promise.all(
         allArchetypes.map(async (archetype) => {
-          const result = await fetchArchetypeWinRate(archetype);
+          const result = await fetchArchetypeWinRate(
+            archetype, 
+            timeFrame, 
+            percentage !== undefined ? percentage : minPercentage,
+            startDate !== undefined ? startDate : customStartDate,
+            endDate !== undefined ? endDate : customEndDate
+          );
           if ('message' in result) {
             errors.push(`${archetype}: ${result.message}`);
           } else {
@@ -295,10 +301,10 @@ function App() {
     const records: Record<string, ArchetypeRecord> = {};
     const errors: string[] = [];
     
-    // Fetch win rates in parallel
+    // Fetch win rates in parallel with time frame filtering
     await Promise.all(
       allArchetypes.map(async (archetype) => {
-        const result = await fetchArchetypeWinRate(archetype);
+        const result = await fetchArchetypeWinRate(archetype, timeFrame, minPercentage, customStartDate, customEndDate);
         if ('message' in result) {
           errors.push(`${archetype}: ${result.message}`);
         } else {

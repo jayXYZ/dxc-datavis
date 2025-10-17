@@ -76,8 +76,25 @@ export const api = {
     const endpoint = `/analysis/archetype-matrix${queryString ? `?${queryString}` : ''}`;
     return fetchJson<ArchetypeMatrix>(endpoint);
   },
-  getArchetypeWinRate: (archetype: string) => 
-    fetchJson<WinLossRecord[]>(`/analysis/win-loss-records?archetype=${archetype}`)
+  getArchetypeWinRate: (archetype: string, timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    params.append('archetype', archetype);
+    if (timeFrame && timeFrame !== 'all_time') {
+      params.append('time_frame', timeFrame);
+    }
+    if (minPercentage !== undefined && minPercentage > 0) {
+      params.append('min_percentage', minPercentage.toString());
+    }
+    if (startDate) {
+      params.append('start_date', startDate);
+    }
+    if (endDate) {
+      params.append('end_date', endDate);
+    }
+    const queryString = params.toString();
+    const endpoint = `/analysis/win-loss-records?${queryString}`;
+    
+    return fetchJson<WinLossRecord[]>(endpoint)
     .then(records => {
       // Find the record for the requested archetype
       const record = records.find(r => r.archetype === archetype);
@@ -85,5 +102,6 @@ export const api = {
         throw new Error(`No record found for archetype: ${archetype}`);
       }
       return record;
-    }),
+    });
+  },
 };
