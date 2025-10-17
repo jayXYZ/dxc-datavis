@@ -76,7 +76,7 @@ export const api = {
     if (timeFrame && timeFrame !== 'all_time') {
       params.append('time_frame', timeFrame);
     }
-    if (minPercentage !== undefined && minPercentage > 0) {
+    if (minPercentage !== undefined) {
       params.append('min_percentage', minPercentage.toString());
     }
     if (startDate) {
@@ -95,7 +95,7 @@ export const api = {
     if (timeFrame && timeFrame !== 'all_time') {
       params.append('time_frame', timeFrame);
     }
-    if (minPercentage !== undefined && minPercentage > 0) {
+    if (minPercentage !== undefined) {
       params.append('min_percentage', minPercentage.toString());
     }
     if (startDate) {
