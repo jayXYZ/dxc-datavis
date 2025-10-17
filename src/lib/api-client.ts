@@ -4,6 +4,8 @@ export interface ArchetypeRecord {
   wins: number;
   losses: number;
   draws: number;
+  total_matches: number;
+  win_rate: number;
 }
 
 export interface MatchupData {

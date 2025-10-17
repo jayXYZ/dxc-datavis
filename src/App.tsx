@@ -223,7 +223,20 @@ function App() {
             endDate !== undefined ? endDate : customEndDate
           );
           if ('message' in result) {
-            errors.push(`${archetype}: ${result.message}`);
+            // Check if this is a "No record found" error, which is expected for archetypes with 0 matches
+            if (result.message.includes('No record found for archetype')) {
+              // Create a default record with 0 wins/losses for archetypes with no matches in this time period
+              records[archetype] = {
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                total_matches: 0,
+                win_rate: 0.0
+              };
+            } else {
+              // Only report actual errors, not missing records
+              errors.push(`${archetype}: ${result.message}`);
+            }
           } else {
             records[archetype] = result;
           }
@@ -312,7 +325,20 @@ function App() {
       allArchetypes.map(async (archetype) => {
         const result = await fetchArchetypeWinRate(archetype, timeFrame, minPercentage, customStartDate, customEndDate);
         if ('message' in result) {
-          errors.push(`${archetype}: ${result.message}`);
+          // Check if this is a "No record found" error, which is expected for archetypes with 0 matches
+          if (result.message.includes('No record found for archetype')) {
+            // Create a default record with 0 wins/losses for archetypes with no matches in this time period
+            records[archetype] = {
+              wins: 0,
+              losses: 0,
+              draws: 0,
+              total_matches: 0,
+              win_rate: 0.0
+            };
+          } else {
+            // Only report actual errors, not missing records
+            errors.push(`${archetype}: ${result.message}`);
+          }
         } else {
           records[archetype] = result;
         }
