@@ -33,9 +33,15 @@ async function fetchData(timeFrame?: TimeFrame, minPercentage?: number, startDat
   }
 }
 
-async function fetchArchetypeWinRate(archetype: string): Promise<ArchetypeRecord | FetchError> {
+async function fetchArchetypeWinRate(
+  archetype: string, 
+  timeFrame?: TimeFrame, 
+  minPercentage?: number, 
+  startDate?: string, 
+  endDate?: string
+): Promise<ArchetypeRecord | FetchError> {
   try {
-    return await api.getArchetypeWinRate(archetype);
+    return await api.getArchetypeWinRate(archetype, timeFrame, minPercentage, startDate, endDate);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : `Failed to fetch win rate for ${archetype}`;
     console.error(message);
