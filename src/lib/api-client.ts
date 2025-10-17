@@ -41,20 +41,31 @@ export interface WinLossRecord {
 // Time frame options
 export type TimeFrame = '3_months' | '6_months' | '1_year' | 'all_time';
 
-const JWT_TOKEN = (window as any).JWT_TOKEN || import.meta.env.VITE_JWT_TOKEN;
+const JWT_TOKEN = import.meta.env.VITE_JWT_TOKEN || (window as any).JWT_TOKEN;
 
 async function fetchJson<T>(endpoint: string): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
+  
+  // Debug logging
+  console.log('API call:', url);
+  console.log('JWT Token available:', !!JWT_TOKEN);
+  console.log('JWT Token value:', JWT_TOKEN ? JWT_TOKEN.substring(0, 20) + '...' : 'undefined');
+  
   const response = await fetch(url, {
     headers: {
       'Authorization': `Bearer ${JWT_TOKEN}`,
     },
   });
+  
+  console.log('Response status:', response.status);
+  
   if (!response.ok) {
+    const errorText = await response.text();
+    console.error('API Error:', response.status, errorText);
     if (response.status === 403) {
       throw new Error('Authentication required. Please check your JWT token.');
     }
-    throw new Error(`API error: ${response.status}`);
+    throw new Error(`API error: ${response.status} - ${errorText}`);
   }
   return await response.json();
 }
