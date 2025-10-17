@@ -67,9 +67,7 @@ function MetaMatrix({
     };
 
     const getTimeFrameDisplay = () => {
-        if (startDate && endDate) {
-            return 'Custom Range';
-        }
+        // Always show the selected time frame name, even when custom dates are used
         return formatTimeFrame(timeFrame);
     };
 
