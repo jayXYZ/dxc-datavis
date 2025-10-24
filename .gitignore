@@ -24,11 +24,4 @@ dist-ssr
 *.sw?
 
 *.tsbuildinfo
-
-# Security - JWT tokens and environment files
 *jwt.js
-jwt.js
-.env
-.env.local
-.env.production
-.env.staging

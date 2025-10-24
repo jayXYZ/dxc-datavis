@@ -41,26 +41,15 @@ export interface WinLossRecord {
 // Time frame options
 export type TimeFrame = '3_months' | '6_months' | '1_year' | 'all_time';
 
-// Secure token management - only use environment variable, no fallback to window
-const JWT_TOKEN = import.meta.env.VITE_JWT_TOKEN;
-
-// Validate that we have a token
-if (!JWT_TOKEN) {
-  console.error('VITE_JWT_TOKEN environment variable is required but not set');
-}
+const JWT_TOKEN = import.meta.env.VITE_JWT_TOKEN || (window as any).JWT_TOKEN;
 
 async function fetchJson<T>(endpoint: string): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   
-  // Only log API calls in development, never expose token information
-  if (import.meta.env.DEV) {
-    console.log('API call:', url);
-  }
-  
-  // Check if token is available before making request
-  if (!JWT_TOKEN) {
-    throw new Error('Authentication token not configured. Please set VITE_JWT_TOKEN environment variable.');
-  }
+  // Debug logging
+  console.log('API call:', url);
+  console.log('JWT Token available:', !!JWT_TOKEN);
+  console.log('JWT Token value:', JWT_TOKEN ? JWT_TOKEN.substring(0, 20) + '...' : 'undefined');
   
   const response = await fetch(url, {
     headers: {
@@ -68,9 +57,7 @@ async function fetchJson<T>(endpoint: string): Promise<T> {
     },
   });
   
-  if (import.meta.env.DEV) {
-    console.log('Response status:', response.status);
-  }
+  console.log('Response status:', response.status);
   
   if (!response.ok) {
     const errorText = await response.text();
