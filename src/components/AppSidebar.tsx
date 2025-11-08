@@ -22,6 +22,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucide-react"
 import swampLogo from "@/assets/swamp-white.svg"
+import TimePeriodSelector from "./TimePeriodSelector"
+import PercentageFilter from "./PercentageFilter"
+import { TimeFrame } from "@/lib/api-client"
 
 interface AppSidebarProps {
     archetypes: string[];
@@ -32,6 +35,13 @@ interface AppSidebarProps {
     onSort: (method: 'games' | 'winrate' | 'alpha') => void;
     winrateOption: 'total' | 'filtered';
     setWinrateOption: (method: 'total' | 'filtered') => void;
+    selectedTimeFrame: TimeFrame;
+    onTimeFrameChange: (timeFrame: TimeFrame) => void;
+    minPercentage: number | undefined;
+    onPercentageChange: (percentage: number | undefined) => void;
+    customStartDate?: string;
+    customEndDate?: string;
+    onCustomDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void;
 }
 
 function AppSidebar({ 
@@ -42,7 +52,14 @@ function AppSidebar({
     sortDirection,
     onSort,
     winrateOption,
-    setWinrateOption
+    setWinrateOption,
+    selectedTimeFrame,
+    onTimeFrameChange,
+    minPercentage,
+    onPercentageChange,
+    customStartDate,
+    customEndDate,
+    onCustomDateRangeChange
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -187,7 +204,51 @@ function AppSidebar({
                                                 <Label htmlFor="option-two">Filtered Winrate</Label>
                                             </div>
                                         </RadioGroup>
-
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                    <Collapsible className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                    <Eye />
+                                    Time Period
+                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <TimePeriodSelector
+                                            selectedTimeFrame={selectedTimeFrame}
+                                            onTimeFrameChange={onTimeFrameChange}
+                                            customStartDate={customStartDate}
+                                            customEndDate={customEndDate}
+                                            onCustomDateRangeChange={onCustomDateRangeChange}
+                                        />
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                    <Collapsible className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                    <Filter />
+                                    Percentage Filter
+                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <PercentageFilter
+                                            minPercentage={minPercentage}
+                                            onPercentageChange={onPercentageChange}
+                                        />
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
                             </CollapsibleContent>

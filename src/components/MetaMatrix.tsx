@@ -10,8 +10,9 @@ import {
 import wilson from 'wilson-score-interval'
 
 export interface MatchupData {
-    archetype_1_wins: number;
-    archetype_2_wins: number;
+    wins: number;
+    losses: number;
+    draws: number;
 }
 
 export interface ResultsData {
@@ -21,6 +22,9 @@ export interface ResultsData {
 export interface ArchetypeRecord {
     wins: number;
     losses: number;
+    draws: number;
+    total_matches: number;
+    win_rate: number;
 }
 
 interface MetaMatrixProps {
@@ -28,9 +32,22 @@ interface MetaMatrixProps {
     archetypeRecords: Record<string, ArchetypeRecord>;
     archetypes: string[];
     winrateOption: string;
+    timeFrame?: string;
+    startDate?: string;
+    endDate?: string;
+    isFetchingInBackground?: boolean;
 }
 
-function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }: MetaMatrixProps) {
+function MetaMatrix({ 
+    matchupData, 
+    archetypeRecords, 
+    archetypes, 
+    winrateOption,
+    timeFrame,
+    startDate,
+    endDate,
+    isFetchingInBackground
+}: MetaMatrixProps) {
 
     const getWinrateColor = (winrate: number) => {
         const normalizedWinrate = winrate / 100;
@@ -38,17 +55,43 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         return `hsl(${hue}, 70%, 45%)`;
     };
 
-    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | null => {
+    const formatTimeFrame = (tf?: string) => {
+        if (!tf) return '';
+        const frameMap: Record<string, string> = {
+            '3_months': '3 Months',
+            '6_months': '6 Months',
+            '1_year': '1 Year',
+            'all_time': 'All Time'
+        };
+        return frameMap[tf] || tf;
+    };
+
+    const getTimeFrameDisplay = () => {
+        // Always show the selected time frame name, even when custom dates are used
+        return formatTimeFrame(timeFrame);
+    };
+
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return '';
+        try {
+            return new Date(dateStr).toLocaleDateString();
+        } catch {
+            return dateStr;
+        }
+    };
+
+    const calculateWinrate = (hero: string, villain: string): { winrate: number, wins: number, losses: number, wilsonLower: number, wilsonUpper: number } | 'no-data' | 'zero-matches' => {
         const matchup = matchupData[hero]?.[villain];
-        if (!matchup) return null;
+        if (!matchup) return 'no-data';
         
-        const wins = matchup.archetype_1_wins;
-        const losses = matchup.archetype_2_wins;
+        const wins = matchup.wins;
+        const losses = matchup.losses;
         const total = wins + losses;
 
+        if (total === 0) return 'zero-matches';
+        
         const wilsonCI = wilson(wins, total)
         
-        if (total === 0) return null;
         return {
             winrate: (wins / total) * 100,
             wins,
@@ -59,8 +102,29 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         };
     };
 
-    if (archetypes.length === 0) {
+    // If we have no archetypes and we're not fetching in background, show loading
+    if (archetypes.length === 0 && !isFetchingInBackground) {
         return <div>Loading...</div>;
+    }
+    
+    // If we have no archetypes but we are fetching in background, show a message
+    if (archetypes.length === 0 && isFetchingInBackground) {
+        return (
+            <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
+                <div className="bg-muted p-3 border-b text-center">
+                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                        {getTimeFrameDisplay()}
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                    </h3>
+                </div>
+                <div className="flex items-center justify-center p-8">
+                    <div className="text-center">
+                        <div className="w-8 h-8 border-4 border-current border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p>Loading {getTimeFrameDisplay()} data...</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const filteredWinrate = (hero: string): {winrate: number, wins: number, losses: number} | null => {
@@ -70,8 +134,8 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
         for (let villain of archetypes) {
             const matchup = matchupData[hero]?.[villain];
             if (matchup) {
-                wins += matchup.archetype_1_wins;
-                losses += matchup.archetype_2_wins;
+                wins += matchup.wins;
+                losses += matchup.losses;
             }
         }
 
@@ -86,6 +150,22 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
 
     return (
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
+            {/* Time Frame Header */}
+            {timeFrame && (
+                <div className="bg-muted p-3 border-b text-center">
+                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
+                        {getTimeFrameDisplay()}
+                        {isFetchingInBackground && (
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                        )}
+                    </h3>
+                    {startDate && endDate && (
+                        <p className="text-sm text-muted-foreground">
+                            {formatDate(startDate)} - {formatDate(endDate)}
+                        </p>
+                    )}
+                </div>
+            )}
             <Table className='border-collapse'>
                 <TableHeader>
                     <TableRow>
@@ -135,16 +215,18 @@ function MetaMatrix({ matchupData, archetypeRecords, archetypes, winrateOption }
                                         className='text-center p-2' 
                                         key={villain}
                                         style={{ 
-                                            backgroundColor: result ? getWinrateColor(result.winrate) : undefined,
+                                            backgroundColor: typeof result === 'object' ? getWinrateColor(result.winrate) : undefined,
                                             transition: 'background-color 0.3s ease'
                                         }}
                                     >
-                                        {result ? (
+                                        {typeof result === 'object' ? (
                                             <>
                                                 <p className="text-xs">({result.wilsonLower.toFixed(1)}% - {result.wilsonUpper.toFixed(1)}%)</p>
                                                 <h4 className='font-bold text-xl'>{result.winrate.toFixed(1)}%</h4>
                                                 <p className='text-m'>{result.wins}W - {result.losses}L</p>
                                             </>
+                                        ) : result === 'zero-matches' ? (
+                                            <h4 className="text-gray-500">No Data</h4>
                                         ) : (
                                             <h4>Loading...</h4>
                                         )}
