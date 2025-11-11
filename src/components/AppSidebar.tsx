@@ -42,6 +42,8 @@ interface AppSidebarProps {
     customStartDate?: string;
     customEndDate?: string;
     onCustomDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void;
+    matrixViewMode: 'filtered_vs_all' | 'filtered_vs_filtered';
+    setMatrixViewMode: (mode: 'filtered_vs_all' | 'filtered_vs_filtered') => void;
 }
 
 function AppSidebar({ 
@@ -59,7 +61,9 @@ function AppSidebar({
     onPercentageChange,
     customStartDate,
     customEndDate,
-    onCustomDateRangeChange
+    onCustomDateRangeChange,
+    matrixViewMode,
+    setMatrixViewMode
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -194,16 +198,34 @@ function AppSidebar({
                             <CollapsibleContent>
                                 <SidebarMenuSub>
                                     <SidebarMenuSubItem>
-                                        <RadioGroup defaultValue={winrateOption}>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem value="total" id="total" onClick={() => setWinrateOption('total')} />
-                                                <Label htmlFor="option-one">Total Winrate</Label>
+                                        <div className="space-y-4">
+                                            <div>
+                                                <Label className="text-sm font-medium mb-2 block">Winrate Display</Label>
+                                                <RadioGroup value={winrateOption} onValueChange={(value) => setWinrateOption(value as 'total' | 'filtered')}>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="total" id="total" />
+                                                        <Label htmlFor="total">Total Winrate</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="filtered" id="filtered" />
+                                                        <Label htmlFor="filtered">Filtered Winrate</Label>
+                                                    </div>
+                                                </RadioGroup>
                                             </div>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem value="filtered" id="filtered" onClick={() => setWinrateOption('filtered')}/>
-                                                <Label htmlFor="option-two">Filtered Winrate</Label>
+                                            <div>
+                                                <Label className="text-sm font-medium mb-2 block">Matrix View</Label>
+                                                <RadioGroup value={matrixViewMode} onValueChange={(value) => setMatrixViewMode(value as 'filtered_vs_all' | 'filtered_vs_filtered')}>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="filtered_vs_all" id="filtered_vs_all" />
+                                                        <Label htmlFor="filtered_vs_all">Filtered vs All</Label>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <RadioGroupItem value="filtered_vs_filtered" id="filtered_vs_filtered" />
+                                                        <Label htmlFor="filtered_vs_filtered">Filtered vs Filtered</Label>
+                                                    </div>
+                                                </RadioGroup>
                                             </div>
-                                        </RadioGroup>
+                                        </div>
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
                             </CollapsibleContent>

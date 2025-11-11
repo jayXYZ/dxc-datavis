@@ -56,9 +56,15 @@ function App() {
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>('total');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
   const [minPercentage, setMinPercentage] = useState<number | undefined>(2);
+  // Default to 'filtered' when a percentage filter is active, otherwise 'total'
+  const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>(
+    minPercentage !== undefined && minPercentage > 0 ? 'filtered' : 'total'
+  );
+  // Matrix view mode: 'filtered_vs_all' shows filtered archetypes vs all above cutoff (default)
+  // 'filtered_vs_filtered' shows filtered archetypes vs filtered archetypes only
+  const [matrixViewMode, setMatrixViewMode] = useState<'filtered_vs_all' | 'filtered_vs_filtered'>('filtered_vs_all');
   const [customStartDate, setCustomStartDate] = useState<string | undefined>(undefined);
   const [customEndDate, setCustomEndDate] = useState<string | undefined>(undefined);
   const [timeFrameData, setTimeFrameData] = useState<{timeFrame: string, startDate?: string, endDate?: string}>({timeFrame: 'all_time'});
@@ -124,6 +130,12 @@ function App() {
   const handlePercentageChange = async (newPercentage: number | undefined) => {
     setMinPercentage(newPercentage);
     
+    // When a percentage filter is active, automatically use 'filtered' winrate option
+    // to show only matches between filtered archetypes
+    if (newPercentage !== undefined && newPercentage > 0) {
+      setWinrateOption('filtered');
+    }
+    
     // Fetch new data in background without showing loading screen
     // Pass the new percentage value directly to avoid using stale state
     fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, customStartDate, customEndDate);
@@ -160,7 +172,8 @@ function App() {
       setMatchupData(cachedData.matrix);
       setArchetypeRecords(cachedData.archetypeRecords);
       setArchetypes(cachedData.archetypes);
-      setVisibleArchetypes(cachedData.archetypes);
+      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
+      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => cachedData.archetypes.includes(arch)));
       setTimeFrameData({
         timeFrame: cachedData.timeFrame,
         startDate: cachedData.startDate,
@@ -285,7 +298,8 @@ function App() {
       setMatchupData(matrixData);
       setArchetypeRecords(records);
       setArchetypes(sortedArchetypes);
-      setVisibleArchetypes(sortedArchetypes);
+      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
+      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => sortedArchetypes.includes(arch)));
       setTimeFrameData(timeFrameInfo);
     } catch (error) {
       console.error('Error fetching data in background:', error);
@@ -419,11 +433,15 @@ function App() {
             customStartDate={customStartDate}
             customEndDate={customEndDate}
             onCustomDateRangeChange={handleCustomDateRangeChange}
+            matrixViewMode={matrixViewMode}
+            setMatrixViewMode={setMatrixViewMode}
           />
           <MetaMatrix 
+            key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
             matchupData={matchupData}
             archetypeRecords={archetypeRecords}
-            archetypes={visibleArchetypes}
+            rowArchetypes={visibleArchetypes}
+            columnArchetypes={matrixViewMode === 'filtered_vs_all' ? archetypes : visibleArchetypes}
             winrateOption={winrateOption}
             timeFrame={timeFrameData.timeFrame}
             startDate={timeFrameData.startDate}
