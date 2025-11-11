@@ -30,7 +30,8 @@ export interface ArchetypeRecord {
 interface MetaMatrixProps {
     matchupData: Record<string, Record<string, MatchupData>>;
     archetypeRecords: Record<string, ArchetypeRecord>;
-    archetypes: string[];
+    rowArchetypes: string[];
+    columnArchetypes: string[];
     winrateOption: string;
     timeFrame?: string;
     startDate?: string;
@@ -41,14 +42,14 @@ interface MetaMatrixProps {
 function MetaMatrix({ 
     matchupData, 
     archetypeRecords, 
-    archetypes, 
+    rowArchetypes,
+    columnArchetypes,
     winrateOption,
     timeFrame,
     startDate,
     endDate,
     isFetchingInBackground
 }: MetaMatrixProps) {
-
     const getWinrateColor = (winrate: number) => {
         const normalizedWinrate = winrate / 100;
         const hue = normalizedWinrate * 120;
@@ -102,13 +103,13 @@ function MetaMatrix({
         };
     };
 
-    // If we have no archetypes and we're not fetching in background, show loading
-    if (archetypes.length === 0 && !isFetchingInBackground) {
+    // If we have no row archetypes and we're not fetching in background, show loading
+    if (rowArchetypes.length === 0 && !isFetchingInBackground) {
         return <div>Loading...</div>;
     }
     
-    // If we have no archetypes but we are fetching in background, show a message
-    if (archetypes.length === 0 && isFetchingInBackground) {
+    // If we have no row archetypes but we are fetching in background, show a message
+    if (rowArchetypes.length === 0 && isFetchingInBackground) {
         return (
             <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
                 <div className="bg-muted p-3 border-b text-center">
@@ -131,7 +132,8 @@ function MetaMatrix({
         let wins = 0;
         let losses = 0;
 
-        for (let villain of archetypes) {
+        // Calculate winrate against column archetypes (which may be all archetypes or filtered)
+        for (let villain of columnArchetypes) {
             const matchup = matchupData[hero]?.[villain];
             if (matchup) {
                 wins += matchup.wins;
@@ -148,6 +150,8 @@ function MetaMatrix({
         };
     };
 
+    const isFilteredVsAll = columnArchetypes.length > rowArchetypes.length;
+    
     return (
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
             {/* Time Frame Header */}
@@ -164,6 +168,11 @@ function MetaMatrix({
                             {formatDate(startDate)} - {formatDate(endDate)}
                         </p>
                     )}
+                    {isFilteredVsAll && rowArchetypes.length < columnArchetypes.length && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                            Showing {rowArchetypes.length} filtered archetype{rowArchetypes.length !== 1 ? 's' : ''} vs {columnArchetypes.length} total
+                        </p>
+                    )}
                 </div>
             )}
             <Table className='border-collapse'>
@@ -172,7 +181,7 @@ function MetaMatrix({
                         <TableHead className='text-center w-[150px] min-w-[150px] sticky left-0 top-0 z-30 bg-background'>
                             Archetype
                         </TableHead>
-                        {archetypes.map(archetype => (
+                        {columnArchetypes.map(archetype => (
                             <TableHead 
                                 className='text-center max-w-[120px] min-w-[120px] sticky top-0 z-20 bg-background text-primary' 
                                 key={archetype}
@@ -183,7 +192,7 @@ function MetaMatrix({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {archetypes.map(hero => (
+                    {rowArchetypes.map(hero => (
                         <TableRow key={hero}>
                             <TableCell className='w-[150px] min-w-[150px] h-[120px] sticky left-0 z-10 bg-background'>
                                 <div className='text-center'>
@@ -203,7 +212,7 @@ function MetaMatrix({
                                     )}
                                 </div>
                             </TableCell>
-                            {archetypes.map(villain => {
+                            {columnArchetypes.map(villain => {
                                 if (hero === villain) {
                                     return <TableCell className='bg-gray-500 w-[120px] min-w-[120px] text-center' key={villain}></TableCell>;
                                 }
