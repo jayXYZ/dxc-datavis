@@ -3,7 +3,7 @@ import MetaMatrix from '@/components/MetaMatrix'
 import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
 import { api, ArchetypeMatrix, TimeFrame } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
@@ -436,18 +436,20 @@ function App() {
             matrixViewMode={matrixViewMode}
             setMatrixViewMode={setMatrixViewMode}
           />
-          <MetaMatrix 
-            key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
-            matchupData={matchupData}
-            archetypeRecords={archetypeRecords}
-            rowArchetypes={visibleArchetypes}
-            columnArchetypes={matrixViewMode === 'filtered_vs_all' ? archetypes : visibleArchetypes}
-            winrateOption={winrateOption}
-            timeFrame={timeFrameData.timeFrame}
-            startDate={timeFrameData.startDate}
-            endDate={timeFrameData.endDate}
-            isFetchingInBackground={isFetchingInBackground}
-          />
+          <SidebarInset>
+            <MetaMatrix 
+              key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
+              matchupData={matchupData}
+              archetypeRecords={archetypeRecords}
+              rowArchetypes={visibleArchetypes}
+              columnArchetypes={matrixViewMode === 'filtered_vs_all' ? archetypes : visibleArchetypes}
+              winrateOption={winrateOption}
+              timeFrame={timeFrameData.timeFrame}
+              startDate={timeFrameData.startDate}
+              endDate={timeFrameData.endDate}
+              isFetchingInBackground={isFetchingInBackground}
+            />
+          </SidebarInset>
         </SidebarProvider>
       )}
     </ThemeProvider>

@@ -6,6 +6,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 //@ts-ignore
 import wilson from 'wilson-score-interval'
 
@@ -112,11 +113,14 @@ function MetaMatrix({
     if (rowArchetypes.length === 0 && isFetchingInBackground) {
         return (
             <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
-                <div className="bg-muted p-3 border-b text-center">
-                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
-                        {getTimeFrameDisplay()}
-                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
-                    </h3>
+                <div className="bg-muted p-3 border-b">
+                    <div className="flex items-center gap-2">
+                        <SidebarTrigger className="-ml-1" />
+                        <h3 className="font-semibold text-lg flex items-center justify-center gap-2 flex-1">
+                            {getTimeFrameDisplay()}
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                        </h3>
+                    </div>
                 </div>
                 <div className="flex items-center justify-center p-8">
                     <div className="text-center">
@@ -156,13 +160,16 @@ function MetaMatrix({
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
             {/* Time Frame Header */}
             {timeFrame && (
-                <div className="bg-muted p-3 border-b text-center">
-                    <h3 className="font-semibold text-lg flex items-center justify-center gap-2">
-                        {getTimeFrameDisplay()}
-                        {isFetchingInBackground && (
-                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
-                        )}
-                    </h3>
+                <div className="bg-muted p-3 border-b">
+                    <div className="flex items-center gap-2">
+                        <SidebarTrigger className="-ml-1" />
+                        <h3 className="font-semibold text-lg flex items-center justify-center gap-2 flex-1">
+                            {getTimeFrameDisplay()}
+                            {isFetchingInBackground && (
+                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin opacity-60"></div>
+                            )}
+                        </h3>
+                    </div>
                     {startDate && endDate && (
                         <p className="text-sm text-muted-foreground">
                             {formatDate(startDate)} - {formatDate(endDate)}
