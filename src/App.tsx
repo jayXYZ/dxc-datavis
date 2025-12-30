@@ -3,7 +3,7 @@ import MetaMatrix from '@/components/MetaMatrix'
 import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
 import { api, ArchetypeMatrix, TimeFrame } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
