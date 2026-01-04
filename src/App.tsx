@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
-import { api, ArchetypeMatrix, TimeFrame, WinLossRecord } from '@/lib/api-client'
+import { api, ArchetypeMatrix, TimeFrame } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
 
 interface FetchError {
@@ -33,16 +33,17 @@ async function fetchData(timeFrame?: TimeFrame, minPercentage?: number, startDat
   }
 }
 
-async function fetchAllWinLossRecords(
+async function fetchArchetypeWinRate(
+  archetype: string, 
   timeFrame?: TimeFrame, 
   minPercentage?: number, 
   startDate?: string, 
   endDate?: string
-): Promise<WinLossRecord[] | FetchError> {
+): Promise<ArchetypeRecord | FetchError> {
   try {
-    return await api.getAllWinLossRecords(timeFrame, minPercentage, startDate, endDate);
+    return await api.getArchetypeWinRate(archetype, timeFrame, minPercentage, startDate, endDate);
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Failed to fetch win/loss records';
+    const message = error instanceof Error ? error.message : `Failed to fetch win rate for ${archetype}`;
     console.error(message);
     return { message };
   }
@@ -220,38 +221,45 @@ function App() {
         endDate: data.end_date
       };
       
-      // Fetch all win/loss records in a single API call
-      const winLossResult = await fetchAllWinLossRecords(
-        timeFrame, 
-        percentage !== undefined ? percentage : minPercentage,
-        startDate !== undefined ? startDate : customStartDate,
-        endDate !== undefined ? endDate : customEndDate
-      );
-      
-      if ('message' in winLossResult) {
-        setError(winLossResult.message);
-        return;
-      }
-      
-      // Convert array of records to a map for easy lookup
+      // Fetch all win rates in the background
       const records: Record<string, ArchetypeRecord> = {};
-      const winLossMap = new Map(winLossResult.map(r => [r.archetype, r]));
+      const errors: string[] = [];
       
-      // Create records for all archetypes, using fetched data or defaults
-      for (const archetype of allArchetypes) {
-        const record = winLossMap.get(archetype);
-        if (record) {
-          records[archetype] = record;
-        } else {
-          // Create a default record with 0 wins/losses for archetypes with no matches
-          records[archetype] = {
-            wins: 0,
-            losses: 0,
-            draws: 0,
-            total_matches: 0,
-            win_rate: 0.0
-          };
-        }
+      // Fetch win rates in parallel with time frame filtering
+      await Promise.all(
+        allArchetypes.map(async (archetype) => {
+          const result = await fetchArchetypeWinRate(
+            archetype, 
+            timeFrame, 
+            percentage !== undefined ? percentage : minPercentage,
+            startDate !== undefined ? startDate : customStartDate,
+            endDate !== undefined ? endDate : customEndDate
+          );
+          if ('message' in result) {
+            // Check if this is a "No record found" error, which is expected for archetypes with 0 matches
+            if (result.message.includes('No record found for archetype')) {
+              // Create a default record with 0 wins/losses for archetypes with no matches in this time period
+              records[archetype] = {
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                total_matches: 0,
+                win_rate: 0.0
+              };
+            } else {
+              // Only report actual errors, not missing records
+              errors.push(`${archetype}: ${result.message}`);
+            }
+          } else {
+            records[archetype] = result;
+          }
+        })
+      );
+
+      // If there were any errors fetching win rates, show them
+      if (errors.length > 0) {
+        setError(`Failed to fetch some win rates:\n${errors.join('\n')}`);
+        return;
       }
       
       // Now that we have all the data, set everything at once
@@ -322,34 +330,40 @@ function App() {
       endDate: data.end_date
     };
     
-    // Fetch all win/loss records in a single API call
-    const winLossResult = await fetchAllWinLossRecords(timeFrame, minPercentage, customStartDate, customEndDate);
+    // Fetch all win rates before showing anything
+    const records: Record<string, ArchetypeRecord> = {};
+    const errors: string[] = [];
     
-    if ('message' in winLossResult) {
-      setError(winLossResult.message);
+    // Fetch win rates in parallel with time frame filtering
+    await Promise.all(
+      allArchetypes.map(async (archetype) => {
+        const result = await fetchArchetypeWinRate(archetype, timeFrame, minPercentage, customStartDate, customEndDate);
+        if ('message' in result) {
+          // Check if this is a "No record found" error, which is expected for archetypes with 0 matches
+          if (result.message.includes('No record found for archetype')) {
+            // Create a default record with 0 wins/losses for archetypes with no matches in this time period
+            records[archetype] = {
+              wins: 0,
+              losses: 0,
+              draws: 0,
+              total_matches: 0,
+              win_rate: 0.0
+            };
+          } else {
+            // Only report actual errors, not missing records
+            errors.push(`${archetype}: ${result.message}`);
+          }
+        } else {
+          records[archetype] = result;
+        }
+      })
+    );
+
+    // If there were any errors fetching win rates, show them
+    if (errors.length > 0) {
+      setError(`Failed to fetch some win rates:\n${errors.join('\n')}`);
       setIsLoading(false);
       return;
-    }
-    
-    // Convert array of records to a map for easy lookup
-    const records: Record<string, ArchetypeRecord> = {};
-    const winLossMap = new Map(winLossResult.map(r => [r.archetype, r]));
-    
-    // Create records for all archetypes, using fetched data or defaults
-    for (const archetype of allArchetypes) {
-      const record = winLossMap.get(archetype);
-      if (record) {
-        records[archetype] = record;
-      } else {
-        // Create a default record with 0 wins/losses for archetypes with no matches
-        records[archetype] = {
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          total_matches: 0,
-          win_rate: 0.0
-        };
-      }
     }
     
     // Now that we have all the data, set everything at once
