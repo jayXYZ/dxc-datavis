@@ -106,4 +106,24 @@ export const api = {
       return record;
     });
   },
+  getAllWinLossRecords: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    // Don't append archetype parameter - this will return all archetypes
+    if (timeFrame && timeFrame !== 'all_time') {
+      params.append('time_frame', timeFrame);
+    }
+    if (minPercentage !== undefined) {
+      params.append('min_percentage', minPercentage.toString());
+    }
+    if (startDate) {
+      params.append('start_date', startDate);
+    }
+    if (endDate) {
+      params.append('end_date', endDate);
+    }
+    const queryString = params.toString();
+    const endpoint = `/analysis/win-loss-records${queryString ? `?${queryString}` : ''}`;
+    
+    return fetchJson<WinLossRecord[]>(endpoint);
+  },
 };
