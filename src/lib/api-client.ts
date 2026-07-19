@@ -38,6 +38,11 @@ export interface WinLossRecord {
   win_rate: number;
 }
 
+export interface BannedCard {
+  card: string;
+  banned_date: string;
+}
+
 // Time frame options
 export type TimeFrame = '3_months' | '6_months' | '1_year' | 'all_time';
 
@@ -125,5 +130,8 @@ export const api = {
     const endpoint = `/analysis/win-loss-records${queryString ? `?${queryString}` : ''}`;
     
     return fetchJson<WinLossRecord[]>(endpoint);
+  },
+  getBannedCards: () => {
+    return fetchJson<BannedCard[]>('/banned-cards');
   },
 };

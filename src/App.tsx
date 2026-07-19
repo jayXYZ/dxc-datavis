@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
-import { api, ArchetypeMatrix, TimeFrame, WinLossRecord } from '@/lib/api-client'
+import { api, ArchetypeMatrix, BannedCard, TimeFrame, WinLossRecord } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
 
 interface FetchError {
@@ -69,6 +69,7 @@ function App() {
   const [timeFrameData, setTimeFrameData] = useState<{timeFrame: string, startDate?: string, endDate?: string}>({timeFrame: 'all_time'});
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingInBackground, setIsFetchingInBackground] = useState(false);
+  const [bannedCards, setBannedCards] = useState<BannedCard[]>([]);
   
   // Cache for storing data by time frame and percentage filter
   const [dataCache, setDataCache] = useState<Record<string, CachedData>>({});
@@ -391,6 +392,14 @@ function App() {
     fetchAndSetData();
   }, []); // Only run on initial mount
 
+  useEffect(() => {
+    api.getBannedCards()
+      .then(setBannedCards)
+      .catch((error: unknown) => {
+        console.error('Failed to fetch banned cards', error);
+      });
+  }, []); // Only run on initial mount
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       {isLoading ? (
@@ -419,6 +428,7 @@ function App() {
             customStartDate={customStartDate}
             customEndDate={customEndDate}
             onCustomDateRangeChange={handleCustomDateRangeChange}
+            bannedCards={bannedCards}
             matrixViewMode={matrixViewMode}
             setMatrixViewMode={setMatrixViewMode}
           />

@@ -24,7 +24,7 @@ import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucid
 import swampLogo from "@/assets/swamp-white.svg"
 import TimePeriodSelector from "./TimePeriodSelector"
 import PercentageFilter from "./PercentageFilter"
-import { TimeFrame } from "@/lib/api-client"
+import { BannedCard, TimeFrame } from "@/lib/api-client"
 
 interface AppSidebarProps {
     archetypes: string[];
@@ -42,6 +42,7 @@ interface AppSidebarProps {
     customStartDate?: string;
     customEndDate?: string;
     onCustomDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void;
+    bannedCards: BannedCard[];
     matrixViewMode: 'filtered_vs_all' | 'filtered_vs_filtered';
     setMatrixViewMode: (mode: 'filtered_vs_all' | 'filtered_vs_filtered') => void;
 }
@@ -62,6 +63,7 @@ function AppSidebar({
     customStartDate,
     customEndDate,
     onCustomDateRangeChange,
+    bannedCards,
     matrixViewMode,
     setMatrixViewMode
 }: AppSidebarProps) {
@@ -249,6 +251,7 @@ function AppSidebar({
                                             customStartDate={customStartDate}
                                             customEndDate={customEndDate}
                                             onCustomDateRangeChange={onCustomDateRangeChange}
+                                            bannedCards={bannedCards}
                                         />
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
