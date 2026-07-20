@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect } from 'react'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
-import { api, ArchetypeMatrix, TimeFrame, WinLossRecord } from '@/lib/api-client'
+import { api, ArchetypeMatrix, TimeFrame, Venue, WinLossRecord } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
 
 interface FetchError {
@@ -23,9 +23,9 @@ interface CachedData {
   minPercentage?: number;
 }
 
-async function fetchData(timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string): Promise<ArchetypeMatrix | FetchError> {
+async function fetchData(timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string, venues?: Venue[]): Promise<ArchetypeMatrix | FetchError> {
   try {
-    return await api.getMatchupData(timeFrame, minPercentage, startDate, endDate);
+    return await api.getMatchupData(timeFrame, minPercentage, startDate, endDate, venues);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to fetch matchup data';
     console.error(message);
@@ -34,13 +34,14 @@ async function fetchData(timeFrame?: TimeFrame, minPercentage?: number, startDat
 }
 
 async function fetchAllWinLossRecords(
-  timeFrame?: TimeFrame, 
-  minPercentage?: number, 
-  startDate?: string, 
-  endDate?: string
+  timeFrame?: TimeFrame,
+  minPercentage?: number,
+  startDate?: string,
+  endDate?: string,
+  venues?: Venue[]
 ): Promise<WinLossRecord[] | FetchError> {
   try {
-    return await api.getAllWinLossRecords(timeFrame, minPercentage, startDate, endDate);
+    return await api.getAllWinLossRecords(timeFrame, minPercentage, startDate, endDate, venues);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to fetch win/loss records';
     console.error(message);
@@ -66,20 +67,22 @@ function App() {
   const [matrixViewMode, setMatrixViewMode] = useState<'filtered_vs_all' | 'filtered_vs_filtered'>('filtered_vs_all');
   const [customStartDate, setCustomStartDate] = useState<string | undefined>(undefined);
   const [customEndDate, setCustomEndDate] = useState<string | undefined>(undefined);
+  const [selectedVenues, setSelectedVenues] = useState<Venue[]>([]);
   const [timeFrameData, setTimeFrameData] = useState<{timeFrame: string, startDate?: string, endDate?: string}>({timeFrame: 'all_time'});
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchingInBackground, setIsFetchingInBackground] = useState(false);
-  
+
   // Cache for storing data by time frame and percentage filter
   const [dataCache, setDataCache] = useState<Record<string, CachedData>>({});
 
   // Helper function to generate cache keys
-  const getCacheKey = (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string) => {
+  const getCacheKey = (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     const baseKey = percentage !== undefined ? `${timeFrame}-${percentage}` : `${timeFrame}-none`;
+    const venuesKey = venues && venues.length > 0 ? `-venues:${[...venues].sort().join(',')}` : '';
     if (startDate && endDate) {
-      return `custom-${startDate}-${endDate}-${baseKey}`;
+      return `custom-${startDate}-${endDate}-${baseKey}${venuesKey}`;
     }
-    return baseKey;
+    return `${baseKey}${venuesKey}`;
   };
 
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
@@ -137,7 +140,13 @@ function App() {
     
     // Fetch new data in background without showing loading screen
     // Pass the new percentage value directly to avoid using stale state
-    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, customStartDate, customEndDate);
+    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, customStartDate, customEndDate, selectedVenues);
+  };
+
+  // Function to handle venue filter changes
+  const handleVenuesChange = async (newVenues: Venue[]) => {
+    setSelectedVenues(newVenues);
+    fetchAndSetDataInBackground(selectedTimeFrame, minPercentage, customStartDate, customEndDate, newVenues);
   };
 
   // Function to handle custom date range changes
@@ -148,7 +157,7 @@ function App() {
     // If both dates are provided, fetch data with custom date range
     // Use 'all_time' as the base timeframe when custom dates are provided
     if (startDate && endDate) {
-      fetchAndSetDataInBackground('all_time', minPercentage, startDate, endDate);
+      fetchAndSetDataInBackground('all_time', minPercentage, startDate, endDate, selectedVenues);
     }
   };
 
@@ -163,7 +172,7 @@ function App() {
     }
     
     // Check if we have cached data for this time frame and percentage filter
-    const cacheKey = getCacheKey(newTimeFrame, minPercentage, customStartDate, customEndDate);
+    const cacheKey = getCacheKey(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
     if (dataCache[cacheKey]) {
       const cachedData = dataCache[cacheKey];
       
@@ -188,23 +197,24 @@ function App() {
       });
       
       // Fetch data in background
-      fetchAndSetDataInBackground(newTimeFrame, minPercentage, customStartDate, customEndDate);
+      fetchAndSetDataInBackground(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
     }
   };
 
   const [error, setError] = useState<string | null>(null);
 
   // Function to fetch data in background without showing loading screen
-  const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string) => {
+  const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     setIsFetchingInBackground(true);
     try {
       // Fetch matchup data with selected time frame and percentage filter
       // Use the passed parameters or fall back to state values
       const data = await fetchData(
-        timeFrame, 
+        timeFrame,
         percentage !== undefined ? percentage : minPercentage,
         startDate !== undefined ? startDate : customStartDate,
-        endDate !== undefined ? endDate : customEndDate
+        endDate !== undefined ? endDate : customEndDate,
+        venues !== undefined ? venues : selectedVenues
       );
       if ('message' in data) {
         setError(data.message);
@@ -222,10 +232,11 @@ function App() {
       
       // Fetch all win/loss records in a single API call
       const winLossResult = await fetchAllWinLossRecords(
-            timeFrame, 
+            timeFrame,
             percentage !== undefined ? percentage : minPercentage,
             startDate !== undefined ? startDate : customStartDate,
-            endDate !== undefined ? endDate : customEndDate
+            endDate !== undefined ? endDate : customEndDate,
+            venues !== undefined ? venues : selectedVenues
           );
       
       if ('message' in winLossResult) {
@@ -279,10 +290,11 @@ function App() {
       setDataCache(prev => ({
         ...prev,
         [getCacheKey(
-          timeFrame, 
+          timeFrame,
           percentage !== undefined ? percentage : minPercentage,
           startDate !== undefined ? startDate : customStartDate,
-          endDate !== undefined ? endDate : customEndDate
+          endDate !== undefined ? endDate : customEndDate,
+          venues !== undefined ? venues : selectedVenues
         )]: cacheEntry
       }));
 
@@ -306,7 +318,7 @@ function App() {
     setError(null);
     
     // Fetch matchup data with selected time frame and percentage filter
-    const data = await fetchData(timeFrame, minPercentage, customStartDate, customEndDate);
+    const data = await fetchData(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
     if ('message' in data) {
       setError(data.message);
       setIsLoading(false);
@@ -314,16 +326,16 @@ function App() {
     }
 
     const allArchetypes = Object.keys(data.matrix);
-    
+
     // Store time frame data
     const timeFrameInfo = {
       timeFrame: data.time_frame,
       startDate: data.start_date,
       endDate: data.end_date
     };
-    
+
     // Fetch all win/loss records in a single API call
-    const winLossResult = await fetchAllWinLossRecords(timeFrame, minPercentage, customStartDate, customEndDate);
+    const winLossResult = await fetchAllWinLossRecords(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
     
     if ('message' in winLossResult) {
       setError(winLossResult.message);
@@ -376,7 +388,7 @@ function App() {
     
     setDataCache(prev => ({
       ...prev,
-      [getCacheKey(timeFrame, minPercentage, customStartDate, customEndDate)]: cacheEntry
+      [getCacheKey(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues)]: cacheEntry
     }));
 
     setMatchupData(matrixData);
@@ -421,6 +433,8 @@ function App() {
             onCustomDateRangeChange={handleCustomDateRangeChange}
             matrixViewMode={matrixViewMode}
             setMatrixViewMode={setMatrixViewMode}
+            selectedVenues={selectedVenues}
+            onVenuesChange={handleVenuesChange}
           />
           <SidebarInset>
             <MetaMatrix 

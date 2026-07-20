@@ -24,7 +24,8 @@ import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucid
 import swampLogo from "@/assets/swamp-white.svg"
 import TimePeriodSelector from "./TimePeriodSelector"
 import PercentageFilter from "./PercentageFilter"
-import { TimeFrame } from "@/lib/api-client"
+import VenueFilter from "./VenueFilter"
+import { TimeFrame, Venue } from "@/lib/api-client"
 
 interface AppSidebarProps {
     archetypes: string[];
@@ -44,6 +45,8 @@ interface AppSidebarProps {
     onCustomDateRangeChange: (startDate: string | undefined, endDate: string | undefined) => void;
     matrixViewMode: 'filtered_vs_all' | 'filtered_vs_filtered';
     setMatrixViewMode: (mode: 'filtered_vs_all' | 'filtered_vs_filtered') => void;
+    selectedVenues: Venue[];
+    onVenuesChange: (venues: Venue[]) => void;
 }
 
 function AppSidebar({ 
@@ -63,7 +66,9 @@ function AppSidebar({
     customEndDate,
     onCustomDateRangeChange,
     matrixViewMode,
-    setMatrixViewMode
+    setMatrixViewMode,
+    selectedVenues,
+    onVenuesChange
 }: AppSidebarProps) {
     const { setOpen, toggleSidebar } = useSidebar();
 
@@ -270,6 +275,27 @@ function AppSidebar({
                                         <PercentageFilter
                                             minPercentage={minPercentage}
                                             onPercentageChange={onPercentageChange}
+                                        />
+                                    </SidebarMenuSubItem>
+                                </SidebarMenuSub>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+                    <Collapsible className="group/collapsible">
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                    <Filter />
+                                    Venue
+                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenuSub>
+                                    <SidebarMenuSubItem>
+                                        <VenueFilter
+                                            selectedVenues={selectedVenues}
+                                            onVenuesChange={onVenuesChange}
                                         />
                                     </SidebarMenuSubItem>
                                 </SidebarMenuSub>
