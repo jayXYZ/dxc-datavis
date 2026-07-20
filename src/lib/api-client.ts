@@ -21,6 +21,7 @@ export interface ArchetypeMatrix {
   start_date?: string;
   end_date?: string;
   min_percentage?: number;
+  venues?: Venue[];
 }
 
 export interface APIResponse<T> {
@@ -41,6 +42,17 @@ export interface WinLossRecord {
 // Time frame options
 export type TimeFrame = '3_months' | '6_months' | '1_year' | 'all_time';
 
+// Event venue options
+export type Venue = 'MTGO' | 'WEBCAM' | 'PAPER';
+
+function appendVenues(params: URLSearchParams, venues?: Venue[]) {
+  if (venues) {
+    for (const venue of venues) {
+      params.append('venues', venue);
+    }
+  }
+}
+
 async function fetchJson<T>(endpoint: string): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   
@@ -60,7 +72,7 @@ async function fetchJson<T>(endpoint: string): Promise<T> {
 }
 
 export const api = {
-  getMatchupData: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
+  getMatchupData: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     const params = new URLSearchParams();
     if (timeFrame && timeFrame !== 'all_time') {
       params.append('time_frame', timeFrame);
@@ -74,11 +86,12 @@ export const api = {
     if (endDate) {
       params.append('end_date', endDate);
     }
+    appendVenues(params, venues);
     const queryString = params.toString();
     const endpoint = `/analysis/archetype-matrix${queryString ? `?${queryString}` : ''}`;
     return fetchJson<ArchetypeMatrix>(endpoint);
   },
-  getArchetypeWinRate: (archetype: string, timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
+  getArchetypeWinRate: (archetype: string, timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     const params = new URLSearchParams();
     params.append('archetype', archetype);
     if (timeFrame && timeFrame !== 'all_time') {
@@ -93,9 +106,10 @@ export const api = {
     if (endDate) {
       params.append('end_date', endDate);
     }
+    appendVenues(params, venues);
     const queryString = params.toString();
     const endpoint = `/analysis/win-loss-records?${queryString}`;
-    
+
     return fetchJson<WinLossRecord[]>(endpoint)
     .then(records => {
       // Find the record for the requested archetype
@@ -106,7 +120,7 @@ export const api = {
       return record;
     });
   },
-  getAllWinLossRecords: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string) => {
+  getAllWinLossRecords: (timeFrame?: TimeFrame, minPercentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     const params = new URLSearchParams();
     // Don't append archetype parameter - this will return all archetypes
     if (timeFrame && timeFrame !== 'all_time') {
@@ -121,9 +135,10 @@ export const api = {
     if (endDate) {
       params.append('end_date', endDate);
     }
+    appendVenues(params, venues);
     const queryString = params.toString();
     const endpoint = `/analysis/win-loss-records${queryString ? `?${queryString}` : ''}`;
-    
+
     return fetchJson<WinLossRecord[]>(endpoint);
   },
 };
