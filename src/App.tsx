@@ -95,10 +95,25 @@ function App() {
         return direction === 'asc' ? gamesA - gamesB : gamesB - gamesA;
       }
       if (method === 'winrate') {
-        const recordA = archetypeRecords[a];
-        const recordB = archetypeRecords[b];
-        const winrateA = recordA ? (recordA.wins / (recordA.wins + recordA.losses)) : 0;
-        const winrateB = recordB ? (recordB.wins / (recordB.wins + recordB.losses)) : 0;
+        const getWinrate = (archetype: string): number => {
+          if (winrateOption === 'filtered') {
+            const columnArchetypes = matrixViewMode === 'filtered_vs_all' ? archetypes : visibleArchetypes;
+            let wins = 0;
+            let losses = 0;
+            for (const villain of columnArchetypes) {
+              const matchup = matchupData[archetype]?.[villain];
+              if (matchup) {
+                wins += matchup.wins;
+                losses += matchup.losses;
+              }
+            }
+            return wins + losses > 0 ? wins / (wins + losses) : 0;
+          }
+          const record = archetypeRecords[archetype];
+          return record ? record.wins / (record.wins + record.losses) : 0;
+        };
+        const winrateA = getWinrate(a);
+        const winrateB = getWinrate(b);
         return direction === 'asc' ? winrateA - winrateB : winrateB - winrateA;
       }
       // alphabetical
