@@ -107,9 +107,10 @@ function MetaMatrix({
         };
     };
 
-    // If we have no row archetypes and we're not fetching in background, show loading
+    // Data has loaded (the app shows its own loading screen before this), but there are
+    // no rows: the filters matched nothing, or every archetype is hidden
     if (rowArchetypes.length === 0 && !isFetchingInBackground) {
-        return <div>Loading...</div>;
+        return <div className="p-4 text-muted-foreground">No archetypes to show for the selected filters.</div>;
     }
     
     // If we have no row archetypes but we are fetching in background, show a message

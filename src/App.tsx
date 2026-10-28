@@ -54,6 +54,10 @@ function App() {
   const [archetypeRecords, setArchetypeRecords] = useState<Record<string, ArchetypeRecord>>({});
   const [archetypes, setArchetypes] = useState<string[]>([]);
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
+  // Archetypes the user unchecked in the filter. Visibility for each new dataset is
+  // derived from this, so archetypes new to a dataset show up and an empty dataset
+  // doesn't leave the matrix permanently empty.
+  const [hiddenArchetypes, setHiddenArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
@@ -89,18 +93,18 @@ function App() {
   const completeDateRange = (startDate?: string, endDate?: string): [string | undefined, string | undefined] =>
     startDate && endDate && startDate <= endDate ? [startDate, endDate] : [undefined, undefined];
 
-  const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
+  const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes, records: Record<string, ArchetypeRecord> = archetypeRecords) => {
     return [...archList].sort((a, b) => {
       if (method === 'games') {
-        const recordA = archetypeRecords[a];
-        const recordB = archetypeRecords[b];
+        const recordA = records[a];
+        const recordB = records[b];
         const gamesA = recordA ? recordA.wins + recordA.losses : 0;
         const gamesB = recordB ? recordB.wins + recordB.losses : 0;
         return direction === 'asc' ? gamesA - gamesB : gamesB - gamesA;
       }
       if (method === 'winrate') {
-        const recordA = archetypeRecords[a];
-        const recordB = archetypeRecords[b];
+        const recordA = records[a];
+        const recordB = records[b];
         const winrateA = recordA ? (recordA.wins / (recordA.wins + recordA.losses)) : 0;
         const winrateB = recordB ? (recordB.wins / (recordB.wins + recordB.losses)) : 0;
         return direction === 'asc' ? winrateA - winrateB : winrateB - winrateA;
@@ -129,8 +133,17 @@ function App() {
   };
 
   const handleVisibilityChange = (newVisible: string[]) => {
+    // Keep hidden archetypes that aren't in the current dataset hidden for when they return
+    setHiddenArchetypes(prevHidden => [
+      ...prevHidden.filter(arch => !archetypes.includes(arch)),
+      ...archetypes.filter(arch => !newVisible.includes(arch)),
+    ]);
     setVisibleArchetypes(sortArchetypes(sortMethod, sortDirection, newVisible));
   };
+
+  // Visible archetypes for a newly loaded dataset: everything the user hasn't hidden
+  const visibleFor = (datasetArchetypes: string[], records: Record<string, ArchetypeRecord>) =>
+    sortArchetypes(sortMethod, sortDirection, datasetArchetypes.filter(arch => !hiddenArchetypes.includes(arch)), records);
 
   // Function to handle percentage filter changes
   const handlePercentageChange = async (newPercentage: number | undefined) => {
@@ -188,8 +201,7 @@ function App() {
       setMatchupData(cachedData.matrix);
       setArchetypeRecords(cachedData.archetypeRecords);
       setArchetypes(cachedData.archetypes);
-      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
-      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => cachedData.archetypes.includes(arch)));
+      setVisibleArchetypes(visibleFor(cachedData.archetypes, cachedData.archetypeRecords));
       setTimeFrameData({
         timeFrame: cachedData.timeFrame,
         startDate: cachedData.startDate,
@@ -311,8 +323,7 @@ function App() {
       setMatchupData(matrixData);
       setArchetypeRecords(records);
       setArchetypes(sortedArchetypes);
-      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
-      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => sortedArchetypes.includes(arch)));
+      setVisibleArchetypes(visibleFor(sortedArchetypes, records));
       setTimeFrameData(timeFrameInfo);
     } catch (error) {
       console.error('Error fetching data in background:', error);
