@@ -40,6 +40,7 @@ function CustomDateRangeSelector({
                     id="start-date"
                     type="date"
                     value={localStartDate}
+                    max={localEndDate || undefined}
                     onChange={(e) => handleStartDateChange(e.target.value)}
                     className="text-sm"
                 />
@@ -50,6 +51,7 @@ function CustomDateRangeSelector({
                     id="end-date"
                     type="date"
                     value={localEndDate}
+                    min={localStartDate || undefined}
                     onChange={(e) => handleEndDateChange(e.target.value)}
                     className="text-sm"
                 />

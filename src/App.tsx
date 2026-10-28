@@ -85,6 +85,10 @@ function App() {
     return `${baseKey}${venuesKey}`;
   };
 
+  // A custom date range applies only when both dates are set and in order
+  const completeDateRange = (startDate?: string, endDate?: string): [string | undefined, string | undefined] =>
+    startDate && endDate && startDate <= endDate ? [startDate, endDate] : [undefined, undefined];
+
   const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
     return [...archList].sort((a, b) => {
       if (method === 'games') {
@@ -140,13 +144,13 @@ function App() {
     
     // Fetch new data in background without showing loading screen
     // Pass the new percentage value directly to avoid using stale state
-    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, customStartDate, customEndDate, selectedVenues);
+    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, ...completeDateRange(customStartDate, customEndDate), selectedVenues);
   };
 
   // Function to handle venue filter changes
   const handleVenuesChange = async (newVenues: Venue[]) => {
     setSelectedVenues(newVenues);
-    fetchAndSetDataInBackground(selectedTimeFrame, minPercentage, customStartDate, customEndDate, newVenues);
+    fetchAndSetDataInBackground(selectedTimeFrame, minPercentage, ...completeDateRange(customStartDate, customEndDate), newVenues);
   };
 
   // Function to handle custom date range changes
@@ -154,9 +158,9 @@ function App() {
     setCustomStartDate(startDate);
     setCustomEndDate(endDate);
     
-    // If both dates are provided, fetch data with custom date range
+    // If both dates are provided and in order, fetch data with custom date range
     // Use 'all_time' as the base timeframe when custom dates are provided
-    if (startDate && endDate) {
+    if (startDate && endDate && startDate <= endDate) {
       fetchAndSetDataInBackground('all_time', minPercentage, startDate, endDate, selectedVenues);
     }
   };
@@ -165,14 +169,18 @@ function App() {
   const handleTimeFrameChange = async (newTimeFrame: TimeFrame) => {
     setSelectedTimeFrame(newTimeFrame);
     
-    // Clear custom dates when switching to predefined timeframes
-    if (newTimeFrame !== 'all_time' || !customStartDate || !customEndDate) {
+    // Clear custom dates when switching to predefined timeframes. Use these local
+    // values below: the state updates aren't visible until the next render.
+    const [startDate, endDate] = newTimeFrame === 'all_time'
+      ? completeDateRange(customStartDate, customEndDate)
+      : [undefined, undefined];
+    if (!startDate) {
       setCustomStartDate(undefined);
       setCustomEndDate(undefined);
     }
     
     // Check if we have cached data for this time frame and percentage filter
-    const cacheKey = getCacheKey(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
+    const cacheKey = getCacheKey(newTimeFrame, minPercentage, startDate, endDate, selectedVenues);
     if (dataCache[cacheKey]) {
       const cachedData = dataCache[cacheKey];
       
@@ -197,13 +205,14 @@ function App() {
       });
       
       // Fetch data in background
-      fetchAndSetDataInBackground(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
+      fetchAndSetDataInBackground(newTimeFrame, minPercentage, startDate, endDate, selectedVenues);
     }
   };
 
   const [error, setError] = useState<string | null>(null);
 
-  // Function to fetch data in background without showing loading screen
+  // Function to fetch data in background without showing loading screen.
+  // startDate/endDate are always passed explicitly; undefined means no custom range.
   const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     setIsFetchingInBackground(true);
     try {
@@ -212,8 +221,8 @@ function App() {
       const data = await fetchData(
         timeFrame,
         percentage !== undefined ? percentage : minPercentage,
-        startDate !== undefined ? startDate : customStartDate,
-        endDate !== undefined ? endDate : customEndDate,
+        startDate,
+        endDate,
         venues !== undefined ? venues : selectedVenues
       );
       if ('message' in data) {
@@ -234,8 +243,8 @@ function App() {
       const winLossResult = await fetchAllWinLossRecords(
             timeFrame,
             percentage !== undefined ? percentage : minPercentage,
-            startDate !== undefined ? startDate : customStartDate,
-            endDate !== undefined ? endDate : customEndDate,
+            startDate,
+            endDate,
             venues !== undefined ? venues : selectedVenues
           );
       
@@ -292,8 +301,8 @@ function App() {
         [getCacheKey(
           timeFrame,
           percentage !== undefined ? percentage : minPercentage,
-          startDate !== undefined ? startDate : customStartDate,
-          endDate !== undefined ? endDate : customEndDate,
+          startDate,
+          endDate,
           venues !== undefined ? venues : selectedVenues
         )]: cacheEntry
       }));
