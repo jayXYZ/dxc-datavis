@@ -69,14 +69,17 @@ function MetaMatrix({
     };
 
     const getTimeFrameDisplay = () => {
-        // Always show the selected time frame name, even when custom dates are used
+        // A custom range is requested as all_time plus dates; plain all_time has no start date
+        if (timeFrame === 'all_time' && startDate) return 'Custom Range';
         return formatTimeFrame(timeFrame);
     };
 
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return '';
         try {
-            return new Date(dateStr).toLocaleDateString();
+            // The API returns UTC timestamps (custom ranges at UTC midnight); format in
+            // UTC so viewers west of UTC don't see the previous day
+            return new Date(dateStr).toLocaleDateString(undefined, { timeZone: 'UTC' });
         } catch {
             return dateStr;
         }
