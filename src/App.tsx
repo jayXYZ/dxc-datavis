@@ -13,6 +13,15 @@ interface FetchError {
 }
 
 // Cache structure for storing data by time frame
+// What sortArchetypes reads; defaults to current state, or a newly loaded dataset's
+// values when sorting it before those state updates land
+interface SortData {
+  records: Record<string, ArchetypeRecord>;
+  matrix: Record<string, Record<string, MatchupData>>;
+  allArchetypes: string[];
+  visible: string[];
+}
+
 interface CachedData {
   matrix: Record<string, Record<string, MatchupData>>;
   archetypeRecords: Record<string, ArchetypeRecord>;
@@ -93,20 +102,40 @@ function App() {
   const completeDateRange = (startDate?: string, endDate?: string): [string | undefined, string | undefined] =>
     startDate && endDate && startDate <= endDate ? [startDate, endDate] : [undefined, undefined];
 
-  const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes, records: Record<string, ArchetypeRecord> = archetypeRecords) => {
+  const sortArchetypes = (
+    method: 'games' | 'winrate' | 'alpha',
+    direction: 'asc' | 'desc',
+    archList: string[] = archetypes,
+    data: SortData = { records: archetypeRecords, matrix: matchupData, allArchetypes: archetypes, visible: visibleArchetypes },
+  ) => {
     return [...archList].sort((a, b) => {
       if (method === 'games') {
-        const recordA = records[a];
-        const recordB = records[b];
+        const recordA = data.records[a];
+        const recordB = data.records[b];
         const gamesA = recordA ? recordA.wins + recordA.losses : 0;
         const gamesB = recordB ? recordB.wins + recordB.losses : 0;
         return direction === 'asc' ? gamesA - gamesB : gamesB - gamesA;
       }
       if (method === 'winrate') {
-        const recordA = records[a];
-        const recordB = records[b];
-        const winrateA = recordA ? (recordA.wins / (recordA.wins + recordA.losses)) : 0;
-        const winrateB = recordB ? (recordB.wins / (recordB.wins + recordB.losses)) : 0;
+        const getWinrate = (archetype: string): number => {
+          if (winrateOption === 'filtered') {
+            const columnArchetypes = matrixViewMode === 'filtered_vs_all' ? data.allArchetypes : data.visible;
+            let wins = 0;
+            let losses = 0;
+            for (const villain of columnArchetypes) {
+              const matchup = data.matrix[archetype]?.[villain];
+              if (matchup) {
+                wins += matchup.wins;
+                losses += matchup.losses;
+              }
+            }
+            return wins + losses > 0 ? wins / (wins + losses) : 0;
+          }
+          const record = data.records[archetype];
+          return record ? record.wins / (record.wins + record.losses) : 0;
+        };
+        const winrateA = getWinrate(a);
+        const winrateB = getWinrate(b);
         return direction === 'asc' ? winrateA - winrateB : winrateB - winrateA;
       }
       // alphabetical
@@ -142,8 +171,14 @@ function App() {
   };
 
   // Visible archetypes for a newly loaded dataset: everything the user hasn't hidden
-  const visibleFor = (datasetArchetypes: string[], records: Record<string, ArchetypeRecord>) =>
-    sortArchetypes(sortMethod, sortDirection, datasetArchetypes.filter(arch => !hiddenArchetypes.includes(arch)), records);
+  const visibleFor = (
+    datasetArchetypes: string[],
+    records: Record<string, ArchetypeRecord>,
+    matrix: Record<string, Record<string, MatchupData>>,
+  ) => {
+    const visible = datasetArchetypes.filter(arch => !hiddenArchetypes.includes(arch));
+    return sortArchetypes(sortMethod, sortDirection, visible, { records, matrix, allArchetypes: datasetArchetypes, visible });
+  };
 
   // Function to handle percentage filter changes
   const handlePercentageChange = async (newPercentage: number | undefined) => {
@@ -201,7 +236,7 @@ function App() {
       setMatchupData(cachedData.matrix);
       setArchetypeRecords(cachedData.archetypeRecords);
       setArchetypes(cachedData.archetypes);
-      setVisibleArchetypes(visibleFor(cachedData.archetypes, cachedData.archetypeRecords));
+      setVisibleArchetypes(visibleFor(cachedData.archetypes, cachedData.archetypeRecords, cachedData.matrix));
       setTimeFrameData({
         timeFrame: cachedData.timeFrame,
         startDate: cachedData.startDate,
@@ -323,7 +358,7 @@ function App() {
       setMatchupData(matrixData);
       setArchetypeRecords(records);
       setArchetypes(sortedArchetypes);
-      setVisibleArchetypes(visibleFor(sortedArchetypes, records));
+      setVisibleArchetypes(visibleFor(sortedArchetypes, records, matrixData));
       setTimeFrameData(timeFrameInfo);
     } catch (error) {
       console.error('Error fetching data in background:', error);
