@@ -69,14 +69,17 @@ function MetaMatrix({
     };
 
     const getTimeFrameDisplay = () => {
-        // Always show the selected time frame name, even when custom dates are used
+        // A custom range is requested as all_time plus dates; plain all_time has no start date
+        if (timeFrame === 'all_time' && startDate) return 'Custom Range';
         return formatTimeFrame(timeFrame);
     };
 
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return '';
         try {
-            return new Date(dateStr).toLocaleDateString();
+            // The API returns UTC timestamps (custom ranges at UTC midnight); format in
+            // UTC so viewers west of UTC don't see the previous day
+            return new Date(dateStr).toLocaleDateString(undefined, { timeZone: 'UTC' });
         } catch {
             return dateStr;
         }
@@ -104,9 +107,10 @@ function MetaMatrix({
         };
     };
 
-    // If we have no row archetypes and we're not fetching in background, show loading
+    // Data has loaded (the app shows its own loading screen before this), but there are
+    // no rows: the filters matched nothing, or every archetype is hidden
     if (rowArchetypes.length === 0 && !isFetchingInBackground) {
-        return <div>Loading...</div>;
+        return <div className="p-4 text-muted-foreground">No archetypes to show for the selected filters.</div>;
     }
     
     // If we have no row archetypes but we are fetching in background, show a message

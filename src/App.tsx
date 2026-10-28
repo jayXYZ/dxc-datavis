@@ -13,6 +13,15 @@ interface FetchError {
 }
 
 // Cache structure for storing data by time frame
+// What sortArchetypes reads; defaults to current state, or a newly loaded dataset's
+// values when sorting it before those state updates land
+interface SortData {
+  records: Record<string, ArchetypeRecord>;
+  matrix: Record<string, Record<string, MatchupData>>;
+  allArchetypes: string[];
+  visible: string[];
+}
+
 interface CachedData {
   matrix: Record<string, Record<string, MatchupData>>;
   archetypeRecords: Record<string, ArchetypeRecord>;
@@ -54,6 +63,10 @@ function App() {
   const [archetypeRecords, setArchetypeRecords] = useState<Record<string, ArchetypeRecord>>({});
   const [archetypes, setArchetypes] = useState<string[]>([]);
   const [visibleArchetypes, setVisibleArchetypes] = useState<string[]>([]);
+  // Archetypes the user unchecked in the filter. Visibility for each new dataset is
+  // derived from this, so archetypes new to a dataset show up and an empty dataset
+  // doesn't leave the matrix permanently empty.
+  const [hiddenArchetypes, setHiddenArchetypes] = useState<string[]>([]);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
@@ -85,11 +98,20 @@ function App() {
     return `${baseKey}${venuesKey}`;
   };
 
-  const sortArchetypes = (method: 'games' | 'winrate' | 'alpha', direction: 'asc' | 'desc', archList: string[] = archetypes) => {
+  // A custom date range applies only when both dates are set and in order
+  const completeDateRange = (startDate?: string, endDate?: string): [string | undefined, string | undefined] =>
+    startDate && endDate && startDate <= endDate ? [startDate, endDate] : [undefined, undefined];
+
+  const sortArchetypes = (
+    method: 'games' | 'winrate' | 'alpha',
+    direction: 'asc' | 'desc',
+    archList: string[] = archetypes,
+    data: SortData = { records: archetypeRecords, matrix: matchupData, allArchetypes: archetypes, visible: visibleArchetypes },
+  ) => {
     return [...archList].sort((a, b) => {
       if (method === 'games') {
-        const recordA = archetypeRecords[a];
-        const recordB = archetypeRecords[b];
+        const recordA = data.records[a];
+        const recordB = data.records[b];
         const gamesA = recordA ? recordA.wins + recordA.losses : 0;
         const gamesB = recordB ? recordB.wins + recordB.losses : 0;
         return direction === 'asc' ? gamesA - gamesB : gamesB - gamesA;
@@ -97,11 +119,11 @@ function App() {
       if (method === 'winrate') {
         const getWinrate = (archetype: string): number => {
           if (winrateOption === 'filtered') {
-            const columnArchetypes = matrixViewMode === 'filtered_vs_all' ? archetypes : visibleArchetypes;
+            const columnArchetypes = matrixViewMode === 'filtered_vs_all' ? data.allArchetypes : data.visible;
             let wins = 0;
             let losses = 0;
             for (const villain of columnArchetypes) {
-              const matchup = matchupData[archetype]?.[villain];
+              const matchup = data.matrix[archetype]?.[villain];
               if (matchup) {
                 wins += matchup.wins;
                 losses += matchup.losses;
@@ -109,7 +131,7 @@ function App() {
             }
             return wins + losses > 0 ? wins / (wins + losses) : 0;
           }
-          const record = archetypeRecords[archetype];
+          const record = data.records[archetype];
           return record ? record.wins / (record.wins + record.losses) : 0;
         };
         const winrateA = getWinrate(a);
@@ -140,7 +162,22 @@ function App() {
   };
 
   const handleVisibilityChange = (newVisible: string[]) => {
+    // Keep hidden archetypes that aren't in the current dataset hidden for when they return
+    setHiddenArchetypes(prevHidden => [
+      ...prevHidden.filter(arch => !archetypes.includes(arch)),
+      ...archetypes.filter(arch => !newVisible.includes(arch)),
+    ]);
     setVisibleArchetypes(sortArchetypes(sortMethod, sortDirection, newVisible));
+  };
+
+  // Visible archetypes for a newly loaded dataset: everything the user hasn't hidden
+  const visibleFor = (
+    datasetArchetypes: string[],
+    records: Record<string, ArchetypeRecord>,
+    matrix: Record<string, Record<string, MatchupData>>,
+  ) => {
+    const visible = datasetArchetypes.filter(arch => !hiddenArchetypes.includes(arch));
+    return sortArchetypes(sortMethod, sortDirection, visible, { records, matrix, allArchetypes: datasetArchetypes, visible });
   };
 
   // Function to handle percentage filter changes
@@ -155,13 +192,13 @@ function App() {
     
     // Fetch new data in background without showing loading screen
     // Pass the new percentage value directly to avoid using stale state
-    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, customStartDate, customEndDate, selectedVenues);
+    fetchAndSetDataInBackground(selectedTimeFrame, newPercentage, ...completeDateRange(customStartDate, customEndDate), selectedVenues);
   };
 
   // Function to handle venue filter changes
   const handleVenuesChange = async (newVenues: Venue[]) => {
     setSelectedVenues(newVenues);
-    fetchAndSetDataInBackground(selectedTimeFrame, minPercentage, customStartDate, customEndDate, newVenues);
+    fetchAndSetDataInBackground(selectedTimeFrame, minPercentage, ...completeDateRange(customStartDate, customEndDate), newVenues);
   };
 
   // Function to handle custom date range changes
@@ -169,9 +206,9 @@ function App() {
     setCustomStartDate(startDate);
     setCustomEndDate(endDate);
     
-    // If both dates are provided, fetch data with custom date range
+    // If both dates are provided and in order, fetch data with custom date range
     // Use 'all_time' as the base timeframe when custom dates are provided
-    if (startDate && endDate) {
+    if (startDate && endDate && startDate <= endDate) {
       fetchAndSetDataInBackground('all_time', minPercentage, startDate, endDate, selectedVenues);
     }
   };
@@ -180,14 +217,18 @@ function App() {
   const handleTimeFrameChange = async (newTimeFrame: TimeFrame) => {
     setSelectedTimeFrame(newTimeFrame);
     
-    // Clear custom dates when switching to predefined timeframes
-    if (newTimeFrame !== 'all_time' || !customStartDate || !customEndDate) {
+    // Clear custom dates when switching to predefined timeframes. Use these local
+    // values below: the state updates aren't visible until the next render.
+    const [startDate, endDate] = newTimeFrame === 'all_time'
+      ? completeDateRange(customStartDate, customEndDate)
+      : [undefined, undefined];
+    if (!startDate) {
       setCustomStartDate(undefined);
       setCustomEndDate(undefined);
     }
     
     // Check if we have cached data for this time frame and percentage filter
-    const cacheKey = getCacheKey(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
+    const cacheKey = getCacheKey(newTimeFrame, minPercentage, startDate, endDate, selectedVenues);
     if (dataCache[cacheKey]) {
       const cachedData = dataCache[cacheKey];
       
@@ -195,8 +236,7 @@ function App() {
       setMatchupData(cachedData.matrix);
       setArchetypeRecords(cachedData.archetypeRecords);
       setArchetypes(cachedData.archetypes);
-      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
-      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => cachedData.archetypes.includes(arch)));
+      setVisibleArchetypes(visibleFor(cachedData.archetypes, cachedData.archetypeRecords, cachedData.matrix));
       setTimeFrameData({
         timeFrame: cachedData.timeFrame,
         startDate: cachedData.startDate,
@@ -212,13 +252,14 @@ function App() {
       });
       
       // Fetch data in background
-      fetchAndSetDataInBackground(newTimeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
+      fetchAndSetDataInBackground(newTimeFrame, minPercentage, startDate, endDate, selectedVenues);
     }
   };
 
   const [error, setError] = useState<string | null>(null);
 
-  // Function to fetch data in background without showing loading screen
+  // Function to fetch data in background without showing loading screen.
+  // startDate/endDate are always passed explicitly; undefined means no custom range.
   const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
     setIsFetchingInBackground(true);
     try {
@@ -227,8 +268,8 @@ function App() {
       const data = await fetchData(
         timeFrame,
         percentage !== undefined ? percentage : minPercentage,
-        startDate !== undefined ? startDate : customStartDate,
-        endDate !== undefined ? endDate : customEndDate,
+        startDate,
+        endDate,
         venues !== undefined ? venues : selectedVenues
       );
       if ('message' in data) {
@@ -249,8 +290,8 @@ function App() {
       const winLossResult = await fetchAllWinLossRecords(
             timeFrame,
             percentage !== undefined ? percentage : minPercentage,
-            startDate !== undefined ? startDate : customStartDate,
-            endDate !== undefined ? endDate : customEndDate,
+            startDate,
+            endDate,
             venues !== undefined ? venues : selectedVenues
           );
       
@@ -307,8 +348,8 @@ function App() {
         [getCacheKey(
           timeFrame,
           percentage !== undefined ? percentage : minPercentage,
-          startDate !== undefined ? startDate : customStartDate,
-          endDate !== undefined ? endDate : customEndDate,
+          startDate,
+          endDate,
           venues !== undefined ? venues : selectedVenues
         )]: cacheEntry
       }));
@@ -317,8 +358,7 @@ function App() {
       setMatchupData(matrixData);
       setArchetypeRecords(records);
       setArchetypes(sortedArchetypes);
-      // Preserve user's filter selections by keeping only archetypes that exist in the new dataset
-      setVisibleArchetypes(prevVisible => prevVisible.filter(arch => sortedArchetypes.includes(arch)));
+      setVisibleArchetypes(visibleFor(sortedArchetypes, records, matrixData));
       setTimeFrameData(timeFrameInfo);
     } catch (error) {
       console.error('Error fetching data in background:', error);

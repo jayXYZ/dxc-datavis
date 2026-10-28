@@ -26,6 +26,9 @@ function CustomDateRangeSelector({
         onDateRangeChange(localStartDate || undefined, value || undefined);
     };
 
+    // min/max only constrain the picker; a typed date can still be out of order
+    const isReversed = Boolean(localStartDate && localEndDate && localStartDate > localEndDate);
+
     const clearDates = () => {
         setLocalStartDate('');
         setLocalEndDate('');
@@ -40,6 +43,7 @@ function CustomDateRangeSelector({
                     id="start-date"
                     type="date"
                     value={localStartDate}
+                    max={localEndDate || undefined}
                     onChange={(e) => handleStartDateChange(e.target.value)}
                     className="text-sm"
                 />
@@ -50,10 +54,18 @@ function CustomDateRangeSelector({
                     id="end-date"
                     type="date"
                     value={localEndDate}
+                    min={localStartDate || undefined}
                     onChange={(e) => handleEndDateChange(e.target.value)}
+                    aria-invalid={isReversed}
+                    aria-describedby={isReversed ? "date-range-error" : undefined}
                     className="text-sm"
                 />
             </div>
+            {isReversed && (
+                <p id="date-range-error" role="alert" className="text-xs text-destructive">
+                    End date must be on or after start date
+                </p>
+            )}
             {(localStartDate || localEndDate) && (
                 <button
                     onClick={clearDates}

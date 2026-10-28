@@ -80,10 +80,9 @@ export const api = {
     if (minPercentage !== undefined) {
       params.append('min_percentage', minPercentage.toString());
     }
-    if (startDate) {
+    // The API applies a custom date range only when both dates are given
+    if (startDate && endDate) {
       params.append('start_date', startDate);
-    }
-    if (endDate) {
       params.append('end_date', endDate);
     }
     appendVenues(params, venues);
@@ -100,10 +99,9 @@ export const api = {
     if (minPercentage !== undefined) {
       params.append('min_percentage', minPercentage.toString());
     }
-    if (startDate) {
+    // The API applies a custom date range only when both dates are given
+    if (startDate && endDate) {
       params.append('start_date', startDate);
-    }
-    if (endDate) {
       params.append('end_date', endDate);
     }
     appendVenues(params, venues);
@@ -129,10 +127,9 @@ export const api = {
     if (minPercentage !== undefined) {
       params.append('min_percentage', minPercentage.toString());
     }
-    if (startDate) {
+    // The API applies a custom date range only when both dates are given
+    if (startDate && endDate) {
       params.append('start_date', startDate);
-    }
-    if (endDate) {
       params.append('end_date', endDate);
     }
     appendVenues(params, venues);
