@@ -462,9 +462,11 @@ function App() {
     setIsLoading(false);
   };
 
+  // Capture the initial request so later filter changes do not trigger this effect.
+  const initialFetch = useRef(fetchAndSetData);
   useEffect(() => {
-    fetchAndSetData();
-  }, []); // Only run on initial mount
+    initialFetch.current();
+  }, []);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

@@ -10,8 +10,8 @@ import {
     SidebarMenuSubButton,
     SidebarMenuSubItem,
     SidebarRail,
-    useSidebar,
 } from "@/components/ui/sidebar"
+import { useSidebar } from "@/components/ui/sidebar-context"
 import {
     Collapsible,
     CollapsibleContent,
@@ -20,7 +20,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye } from "lucide-react"
+import { ChevronDown, ArrowDown, ArrowUp, ArrowDownUp, Filter, Eye, CalendarDays, Percent, MapPin } from "lucide-react"
 import swampLogo from "@/assets/swamp-white.svg"
 import TimePeriodSelector from "./TimePeriodSelector"
 import PercentageFilter from "./PercentageFilter"
@@ -107,15 +107,15 @@ function AppSidebar({
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="group-data-[collapsible=icon]:px-2">
                 <SidebarMenu>
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Sort">
                                     <ArrowDownUp />
-                                    Sort
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Sort</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -145,10 +145,10 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Filter">
                                     <Filter />
-                                    Filter
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Filter</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -194,10 +194,10 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Display Options">
                                     <Eye />
-                                    Display Options
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Display Options</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -239,10 +239,10 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
-                                    <Eye />
-                                    Time Period
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Time Period">
+                                    <CalendarDays />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Time Period</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -263,10 +263,10 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
-                                    <Filter />
-                                    Percentage Filter
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Percentage Filter">
+                                    <Percent />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Percentage Filter</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -284,10 +284,10 @@ function AppSidebar({
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
-                                <SidebarMenuButton onClick={() => setOpen(true)}>
-                                    <Filter />
-                                    Venue
-                                    <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                                <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Venue">
+                                    <MapPin />
+                                    <span className="group-data-[collapsible=icon]:sr-only">Venue</span>
+                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
