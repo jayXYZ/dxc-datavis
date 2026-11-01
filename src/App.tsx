@@ -7,6 +7,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
 import { api, ArchetypeMatrix, TimeFrame, Venue, WinLossRecord } from '@/lib/api-client'
 import { ErrorMessage } from '@/components/ErrorMessage'
+import { DEFAULT_MIN_PERCENTAGE } from '@/lib/defaults'
 
 interface FetchError {
   message: string;
@@ -71,7 +72,7 @@ function App() {
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
-  const [minPercentage, setMinPercentage] = useState<number | undefined>(2);
+  const [minPercentage, setMinPercentage] = useState<number | undefined>(DEFAULT_MIN_PERCENTAGE);
   // Default to 'filtered' when a percentage filter is active, otherwise 'total'
   const [winrateOption, setWinrateOption] = useState<'total' | 'filtered'>(
     minPercentage !== undefined && minPercentage > 0 ? 'filtered' : 'total'
