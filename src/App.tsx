@@ -379,8 +379,11 @@ function App() {
     setIsLoading(true);
     setError(null);
     
-    // Fetch matchup data with selected time frame and percentage filter
-    const data = await fetchData(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
+    // These requests use the same filters but do not depend on each other.
+    const [data, winLossResult] = await Promise.all([
+      fetchData(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues),
+      fetchAllWinLossRecords(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues),
+    ]);
     if ('message' in data) {
       setError(data.message);
       setIsLoading(false);
@@ -396,9 +399,6 @@ function App() {
       endDate: data.end_date
     };
 
-    // Fetch all win/loss records in a single API call
-    const winLossResult = await fetchAllWinLossRecords(timeFrame, minPercentage, customStartDate, customEndDate, selectedVenues);
-    
     if ('message' in winLossResult) {
       setError(winLossResult.message);
       setIsLoading(false);
@@ -468,8 +468,22 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       {isLoading ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="text-lg">Loading data...</div>
+        <div className="min-h-screen bg-background text-foreground" role="status" aria-live="polite" aria-busy="true">
+          <div className="flex min-h-screen">
+            <aside className="hidden w-64 shrink-0 border-r bg-sidebar p-5 md:block" aria-hidden="true">
+              <div className="h-6 w-32 rounded bg-muted" />
+              <div className="mt-10 space-y-5">
+                {[1, 2, 3, 4].map(item => <div key={item} className="h-4 w-40 rounded bg-muted motion-safe:animate-pulse" />)}
+              </div>
+            </aside>
+            <main className="min-w-0 flex-1 p-4 sm:p-6">
+              <h1 className="text-lg font-semibold">All Time</h1>
+              <p className="mt-1 text-sm text-muted-foreground">Loading matchup data...</p>
+              <div className="mt-6 space-y-3" aria-hidden="true">
+                {[1, 2, 3, 4, 5, 6].map(item => <div key={item} className="h-10 rounded bg-muted motion-safe:animate-pulse" />)}
+              </div>
+            </main>
+          </div>
         </div>
       ) : error ? (
         <div className="flex items-center justify-center min-h-screen">
