@@ -159,12 +159,14 @@ function MetaMatrix({
     };
 
     const isFilteredVsAll = columnArchetypes.length > rowArchetypes.length;
+    const matrixWidth = 130 + columnArchetypes.length * 100;
     
     return (
         <div className="max-h-[100vh] max-w-[100vw] overflow-auto relative border-2">
             {/* Time Frame Header */}
             {timeFrame && (
-                <div className="bg-muted p-3 border-b">
+                <div className="relative isolate bg-muted p-3 border-b">
+                    <div aria-hidden="true" className="absolute inset-y-0 left-0 -z-10 min-w-full border-b bg-muted" style={{ width: matrixWidth }} />
                     <div className="flex items-center gap-2">
                         <SidebarTrigger className="-ml-1" />
                         <h3 className="font-semibold text-lg flex items-center justify-center gap-2 flex-1">
@@ -188,22 +190,22 @@ function MetaMatrix({
             )}
             <Table
                 className='border-collapse table-fixed'
-                style={{ width: 150 + columnArchetypes.length * 120 }}
+                style={{ width: matrixWidth }}
             >
                 <colgroup>
-                    <col style={{ width: 150 }} />
+                    <col style={{ width: 130 }} />
                     {columnArchetypes.map(archetype => (
-                        <col key={archetype} style={{ width: 120 }} />
+                        <col key={archetype} style={{ width: 100 }} />
                     ))}
                 </colgroup>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className='text-center w-[150px] min-w-[150px] sticky left-0 top-0 z-30 bg-background'>
+                        <TableHead className='text-center w-[130px] min-w-[130px] sticky left-0 top-0 z-30 bg-background'>
                             Archetype
                         </TableHead>
                         {columnArchetypes.map(archetype => (
                             <TableHead 
-                                className='text-center max-w-[120px] min-w-[120px] sticky top-0 z-20 bg-background text-primary' 
+                                className='text-center px-1 break-words max-w-[100px] min-w-[100px] sticky top-0 z-20 bg-background text-primary' 
                                 key={archetype}
                             >
                                 {archetype}
@@ -214,7 +216,7 @@ function MetaMatrix({
                 <TableBody>
                     {rowArchetypes.map(hero => (
                         <TableRow key={hero}>
-                            <TableCell className='w-[150px] min-w-[150px] h-[120px] sticky left-0 z-10 bg-background'>
+                            <TableCell className='w-[130px] min-w-[130px] h-[90px] p-2 sticky left-0 z-10 bg-background'>
                                 <div className='text-center'>
                                     <p className='font-bold'>{hero}</p>
                                     {archetypeRecords[hero] && (
@@ -234,14 +236,14 @@ function MetaMatrix({
                             </TableCell>
                             {columnArchetypes.map(villain => {
                                 if (hero === villain) {
-                                    return <TableCell className='bg-gray-500 w-[120px] min-w-[120px] text-center' key={villain}></TableCell>;
+                                    return <TableCell className='bg-gray-500 w-[100px] min-w-[100px] text-center' key={villain}></TableCell>;
                                 }
                                 
                                 const result = calculateWinrate(hero, villain);
                                 
                                 return (
                                     <TableCell 
-                                        className='text-center p-2' 
+                                        className='text-center p-1' 
                                         key={villain}
                                         style={{ 
                                             backgroundColor: typeof result === 'object' ? getWinrateColor(result.winrate) : undefined,
@@ -250,9 +252,9 @@ function MetaMatrix({
                                     >
                                         {typeof result === 'object' ? (
                                             <>
-                                                <p className="text-xs">({result.wilsonLower.toFixed(1)}% - {result.wilsonUpper.toFixed(1)}%)</p>
-                                                <h4 className='font-bold text-xl'>{result.winrate.toFixed(1)}%</h4>
-                                                <p className='text-m'>{result.wins}W - {result.losses}L</p>
+                                                <p className="text-[11px] whitespace-nowrap">({result.wilsonLower.toFixed(1)}% - {result.wilsonUpper.toFixed(1)}%)</p>
+                                                <h4 className='font-bold text-lg'>{result.winrate.toFixed(1)}%</h4>
+                                                <p className='text-xs'>{result.wins}W - {result.losses}L</p>
                                             </>
                                         ) : result === 'zero-matches' ? (
                                             <h4 className="text-gray-500">No Data</h4>
