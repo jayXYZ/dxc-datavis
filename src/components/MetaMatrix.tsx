@@ -7,7 +7,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-//@ts-ignore
+// @ts-expect-error wilson-score-interval does not provide TypeScript declarations
 import wilson from 'wilson-score-interval'
 
 export interface MatchupData {
@@ -141,7 +141,7 @@ function MetaMatrix({
         let losses = 0;
 
         // Calculate winrate against column archetypes (which may be all archetypes or filtered)
-        for (let villain of columnArchetypes) {
+        for (const villain of columnArchetypes) {
             const matchup = matchupData[hero]?.[villain];
             if (matchup) {
                 wins += matchup.wins;

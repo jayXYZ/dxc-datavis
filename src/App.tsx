@@ -2,7 +2,7 @@ import './App.css'
 import MetaMatrix from '@/components/MetaMatrix'
 import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import AppSidebar from '@/components/AppSidebar'
 import { api, ArchetypeMatrix, TimeFrame, Venue, WinLossRecord } from '@/lib/api-client'
@@ -66,7 +66,8 @@ function App() {
   // Archetypes the user unchecked in the filter. Visibility for each new dataset is
   // derived from this, so archetypes new to a dataset show up and an empty dataset
   // doesn't leave the matrix permanently empty.
-  const [hiddenArchetypes, setHiddenArchetypes] = useState<string[]>([]);
+  const hiddenArchetypes = useRef<string[]>([]);
+  const latestRequest = useRef(0);
   const [sortMethod, setSortMethod] = useState<'games' | 'winrate' | 'alpha'>('games');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('all_time');
@@ -163,10 +164,10 @@ function App() {
 
   const handleVisibilityChange = (newVisible: string[]) => {
     // Keep hidden archetypes that aren't in the current dataset hidden for when they return
-    setHiddenArchetypes(prevHidden => [
-      ...prevHidden.filter(arch => !archetypes.includes(arch)),
+    hiddenArchetypes.current = [
+      ...hiddenArchetypes.current.filter(arch => !archetypes.includes(arch)),
       ...archetypes.filter(arch => !newVisible.includes(arch)),
-    ]);
+    ];
     setVisibleArchetypes(sortArchetypes(sortMethod, sortDirection, newVisible));
   };
 
@@ -176,7 +177,7 @@ function App() {
     records: Record<string, ArchetypeRecord>,
     matrix: Record<string, Record<string, MatchupData>>,
   ) => {
-    const visible = datasetArchetypes.filter(arch => !hiddenArchetypes.includes(arch));
+    const visible = datasetArchetypes.filter(arch => !hiddenArchetypes.current.includes(arch));
     return sortArchetypes(sortMethod, sortDirection, visible, { records, matrix, allArchetypes: datasetArchetypes, visible });
   };
 
@@ -230,6 +231,8 @@ function App() {
     // Check if we have cached data for this time frame and percentage filter
     const cacheKey = getCacheKey(newTimeFrame, minPercentage, startDate, endDate, selectedVenues);
     if (dataCache[cacheKey]) {
+      latestRequest.current++;
+      setIsFetchingInBackground(false);
       const cachedData = dataCache[cacheKey];
       
       // Update the matrix in place using cached data
@@ -261,6 +264,7 @@ function App() {
   // Function to fetch data in background without showing loading screen.
   // startDate/endDate are always passed explicitly; undefined means no custom range.
   const fetchAndSetDataInBackground = async (timeFrame: TimeFrame, percentage?: number, startDate?: string, endDate?: string, venues?: Venue[]) => {
+    const requestId = ++latestRequest.current;
     setIsFetchingInBackground(true);
     try {
       // Fetch matchup data with selected time frame and percentage filter
@@ -272,6 +276,7 @@ function App() {
         endDate,
         venues !== undefined ? venues : selectedVenues
       );
+      if (requestId !== latestRequest.current) return;
       if ('message' in data) {
         setError(data.message);
         return;
@@ -295,6 +300,7 @@ function App() {
             venues !== undefined ? venues : selectedVenues
           );
       
+      if (requestId !== latestRequest.current) return;
       if ('message' in winLossResult) {
         setError(winLossResult.message);
         return;
@@ -361,10 +367,12 @@ function App() {
       setVisibleArchetypes(visibleFor(sortedArchetypes, records, matrixData));
       setTimeFrameData(timeFrameInfo);
     } catch (error) {
-      console.error('Error fetching data in background:', error);
-      setError('Failed to fetch data in background');
+      if (requestId === latestRequest.current) {
+        console.error('Error fetching data in background:', error);
+        setError('Failed to fetch data in background');
+      }
     } finally {
-      setIsFetchingInBackground(false);
+      if (requestId === latestRequest.current) setIsFetchingInBackground(false);
     }
   };
 
