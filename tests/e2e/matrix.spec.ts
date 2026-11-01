@@ -40,8 +40,8 @@ test('matrix fits the viewport and scrolls to the final column', async ({ page }
   await expect(page.getByRole('columnheader', { name: 'Archetype' })).toBeVisible()
 })
 
-test('sort, filter and matrix view remain usable', async ({ page }, testInfo) => {
-  if (testInfo.project.name === 'phone' || testInfo.project.name === 'small-phone') await page.getByRole('button', { name: 'Toggle Sidebar' }).click()
+test('sort, filter and matrix view remain usable', async ({ page }) => {
+  if (page.viewportSize()!.width < 768) await page.getByRole('button', { name: 'Toggle Sidebar' }).click()
   await page.getByRole('button', { name: 'Sort', exact: true }).click()
   await page.getByText('A to Z', { exact: true }).click()
   await expect(page.locator('tbody tr').first().locator('td').first()).toContainText('Elves')
@@ -56,8 +56,8 @@ test('sort, filter and matrix view remain usable', async ({ page }, testInfo) =>
   await expect(page.locator('thead th')).toHaveCount(3)
 })
 
-test('time and venue changes request the selected filters', async ({ page }, testInfo) => {
-  if (testInfo.project.name === 'phone' || testInfo.project.name === 'small-phone') await page.getByRole('button', { name: 'Toggle Sidebar' }).click()
+test('time and venue changes request the selected filters', async ({ page }) => {
+  if (page.viewportSize()!.width < 768) await page.getByRole('button', { name: 'Toggle Sidebar' }).click()
   await page.getByRole('button', { name: 'Time Period', exact: true }).click()
   const timeRequest = page.waitForRequest(r => r.url().includes('/analysis/archetype-matrix') && r.url().includes('time_frame=3_months'))
   await page.getByLabel('3 Months').check()
@@ -79,7 +79,6 @@ test('time and venue changes request the selected filters', async ({ page }, tes
   await expect(page.locator('h3')).toContainText('Custom Range')
 })
 
-test('initial layout screenshot', async ({ page }, testInfo) => {
-  test.skip(testInfo.project.name === 'firefox' || testInfo.project.name === 'webkit', 'Visual baselines use Chromium')
+test('initial layout screenshot', async ({ page }) => {
   await expect(page).toHaveScreenshot('matrix.png', { animations: 'disabled' })
 })

@@ -13,8 +13,13 @@ export default defineConfig({
     { name: 'tablet', use: { viewport: { width: 768, height: 1024 }, browserName: 'chromium' } },
     { name: 'laptop', use: { viewport: { width: 1024, height: 768 }, browserName: 'chromium' } },
     { name: 'desktop', use: { viewport: { width: 1440, height: 900 }, browserName: 'chromium' } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    ...(['firefox', 'webkit'] as const).flatMap(browserName => [
+      { name: `${browserName}-phone`, use: { browserName, viewport: { width: 390, height: 844 } } },
+      { name: `${browserName}-small-phone`, use: { browserName, viewport: { width: 320, height: 568 } } },
+      { name: `${browserName}-tablet`, use: { browserName, viewport: { width: 768, height: 1024 } } },
+      { name: `${browserName}-laptop`, use: { browserName, viewport: { width: 1024, height: 768 } } },
+      { name: `${browserName}-desktop`, use: { browserName, viewport: { width: 1440, height: 900 } } },
+    ]),
   ],
   webServer: process.env.PLAYWRIGHT_BASE_URL ? undefined : {
     command: 'npm run dev -- --host 127.0.0.1 --port 4173 --strictPort',

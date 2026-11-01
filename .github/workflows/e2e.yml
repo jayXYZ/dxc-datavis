@@ -15,6 +15,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Firefox requires the container home directory to belong to its user.
+      - run: chown "$(id -u):$(id -g)" /github/home
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: failure()
