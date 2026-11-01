@@ -499,7 +499,7 @@ function App() {
             selectedVenues={selectedVenues}
             onVenuesChange={handleVenuesChange}
           />
-          <SidebarInset>
+          <SidebarInset className="min-w-0">
             <MetaMatrix 
               key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
               matchupData={matchupData}

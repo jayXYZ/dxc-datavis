@@ -186,7 +186,16 @@ function MetaMatrix({
                     )}
                 </div>
             )}
-            <Table className='border-collapse'>
+            <Table
+                className='border-collapse table-fixed'
+                style={{ width: 150 + columnArchetypes.length * 120 }}
+            >
+                <colgroup>
+                    <col style={{ width: 150 }} />
+                    {columnArchetypes.map(archetype => (
+                        <col key={archetype} style={{ width: 120 }} />
+                    ))}
+                </colgroup>
                 <TableHeader>
                     <TableRow>
                         <TableHead className='text-center w-[150px] min-w-[150px] sticky left-0 top-0 z-30 bg-background'>
