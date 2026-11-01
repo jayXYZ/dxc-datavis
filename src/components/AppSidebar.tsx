@@ -101,21 +101,21 @@ function AppSidebar({
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton onClick={toggleSidebar} className="mb-4">
-                            <img src={swampLogo} alt="Swamp Logo" className="h-8 w-8" />
-                            <span>DxC: Project Metagame</span>
+                            <img src={swampLogo} alt="Swamp Logo" className="h-8 w-8 shrink-0 transition-[width,height] duration-200 ease-linear group-data-[collapsible=icon]:h-4 group-data-[collapsible=icon]:w-4" />
+                            <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">DxC: Project Metagame</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
-            <SidebarContent className="group-data-[collapsible=icon]:px-2">
+            <SidebarContent className="transition-[padding] duration-200 ease-linear group-data-[collapsible=icon]:px-2">
                 <SidebarMenu>
                     <Collapsible className="group/collapsible">
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Sort">
                                     <ArrowDownUp />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Sort</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Sort</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -147,8 +147,8 @@ function AppSidebar({
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Filter">
                                     <Filter />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Filter</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Filter</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -196,8 +196,8 @@ function AppSidebar({
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Display Options">
                                     <Eye />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Display Options</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Display Options</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -241,8 +241,8 @@ function AppSidebar({
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Time Period">
                                     <CalendarDays />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Time Period</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Time Period</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -265,8 +265,8 @@ function AppSidebar({
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Percentage Filter">
                                     <Percent />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Percentage Filter</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Percentage Filter</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
@@ -286,8 +286,8 @@ function AppSidebar({
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton onClick={() => setOpen(true)} tooltip="Venue">
                                     <MapPin />
-                                    <span className="group-data-[collapsible=icon]:sr-only">Venue</span>
-                                    <ChevronDown className="ml-auto transition-transform group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-180" />
+                                    <span className="whitespace-nowrap transition-opacity duration-200 group-data-[collapsible=icon]:opacity-0">Venue</span>
+                                    <ChevronDown className="ml-auto transition-[transform,opacity] duration-200 group-data-[collapsible=icon]:opacity-0 group-data-[state=open]/collapsible:rotate-180" />
                                 </SidebarMenuButton>
                             </CollapsibleTrigger>
                             <CollapsibleContent>
