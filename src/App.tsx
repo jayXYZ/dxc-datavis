@@ -1,5 +1,6 @@
 import './App.css'
 import MetaMatrix from '@/components/MetaMatrix'
+import StatsAccess from '@/components/StatsAccess'
 import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect, useRef } from 'react'
@@ -60,6 +61,12 @@ async function fetchAllWinLossRecords(
 }
 
 function App() {
+  const [showStats, setShowStats] = useState(() => window.location.hash === '#statistics');
+  useEffect(() => {
+    const onHashChange = () => setShowStats(window.location.hash === '#statistics');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
   const [matchupData, setMatchupData] = useState<Record<string, Record<string, MatchupData>>>({});
   const [archetypeRecords, setArchetypeRecords] = useState<Record<string, ArchetypeRecord>>({});
   const [archetypes, setArchetypes] = useState<string[]>([]);
@@ -470,7 +477,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      {isLoading ? (
+      {showStats ? <StatsAccess /> : isLoading ? (
         <div className="min-h-screen bg-background text-foreground" role="status" aria-live="polite" aria-busy="true">
           <div className="flex min-h-screen">
             <aside className="hidden w-64 shrink-0 border-r bg-sidebar p-5 md:block" aria-hidden="true">
@@ -494,7 +501,7 @@ function App() {
         </div>
       ) : (
         <SidebarProvider>
-          <AppSidebar 
+          <AppSidebar
             archetypes={sortArchetypes('alpha', 'desc', archetypes)}
             visibleArchetypes={visibleArchetypes}
             setVisibleArchetypes={handleVisibilityChange}
@@ -516,7 +523,7 @@ function App() {
             onVenuesChange={handleVenuesChange}
           />
           <SidebarInset className="min-w-0">
-            <MetaMatrix 
+            <MetaMatrix
               key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
               matchupData={matchupData}
               archetypeRecords={archetypeRecords}
