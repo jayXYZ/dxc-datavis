@@ -6,7 +6,7 @@ type Period = { start_date: string; end_date: string; records: RecordRow[] }
 type Marker = { id: number; name: string; start_date: string; entrant_count: number }
 const percent = (n: number | null | undefined) => n == null ? '—' : `${(n * 100).toFixed(1)}%`
 
-export default function ExploratoryStats({ start, end }: { start: string; end: string }) {
+export default function ExploratoryStats({ start, end, accessKey }: { start: string; end: string; accessKey: string }) {
   const [interval, setInterval] = useState<'month' | 'quarter'>('quarter')
   const [tiers, setTiers] = useState<RecordRow[] | null>(null)
   const [periods, setPeriods] = useState<Period[] | null>(null)
@@ -18,7 +18,7 @@ export default function ExploratoryStats({ start, end }: { start: string; end: s
     const base = import.meta.env.VITE_API_URL || DEFAULT_API_BASE_URL
     const get = async (name: string, extra = '') => {
       const query = new URLSearchParams({ start_date: start, end_date: end })
-      const response = await fetch(`${base}/analysis/${name}?${query}${extra}`)
+      const response = await fetch(`${base}/analysis/${name}?${query}${extra}`, { headers: { Authorization: `Bearer ${accessKey}` }, cache: 'no-store' })
       if (!response.ok) throw new Error(`Could not load ${name} (${response.status})`)
       return response.json()
     }
