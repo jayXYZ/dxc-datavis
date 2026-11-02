@@ -18,7 +18,13 @@ test('shows verified placement bands and filters events by size', async ({ page 
     if (url.pathname.endsWith('/field-metagame')) return route.fulfill({ json: { eligible_events: 1, entrants: 65, complete_field_entrants: 65, spice_field_share: 0, archetypes: [] } })
     if (url.pathname.endsWith('/winners-metagame')) return route.fulfill({ json: { eligible_events: 1, recorded_matches: 5, unclassified_net_wins: 0, unregistered_net_wins: 0, archetypes: [] } })
     if (url.pathname.endsWith('/experimental-tiers')) return route.fulfill({ json: { records: [] } })
-    if (url.pathname.endsWith('/win-rate-trends')) return route.fulfill({ json: { periods: [{ start_date: '2024-01-01', end_date: url.searchParams.get('interval') === 'month' ? '2024-01-31' : '2024-03-31', records: [] }] } })
+    if (url.pathname.endsWith('/win-rate-trends')) {
+      const row = (wins: number, losses: number) => ({ archetype: 'Aluren', wins, losses, total_matches: wins + losses, win_rate: wins / (wins + losses), win_rate_change: null })
+      const periods = url.searchParams.get('interval') === 'month'
+        ? [{ start_date: '2024-01-01', end_date: '2024-01-31', records: [row(9, 1)] }, { start_date: '2024-02-01', end_date: '2024-02-29', records: [row(2, 8)] }]
+        : [{ start_date: '2024-01-01', end_date: '2024-03-31', records: [row(11, 9)] }]
+      return route.fulfill({ json: { periods } })
+    }
     if (url.pathname.endsWith('/event-markers')) return route.fulfill({ json: { events: [{ id: 1, name: 'Large event', start_date: '2024-01-12T00:00:00', entrant_count: 80 }] } })
     return route.abort()
   })
@@ -38,15 +44,18 @@ test('shows verified placement bands and filters events by size', async ({ page 
   await expect.poll(() => requests.some(request => request.includes('/top-eight?') && request.includes('min_entrants=0'))).toBeTruthy()
   await page.getByRole('button', { name: 'Load trends and tiers for selected dates' }).click()
   await expect(page.getByRole('heading', { name: 'Quarterly win rates' })).toBeVisible()
-  await expect(page.getByText('2024-01-01 to 2024-03-31')).toBeVisible()
-  await page.getByLabel('Period').selectOption('month')
+  await expect(page.getByRole('table', { name: 'Experimental tier ranking' }).getByRole('row', { name: /Aluren/ })).toContainText('55.0%')
+  await page.getByRole('combobox', { name: 'Period', exact: true }).selectOption('month')
   await expect(page.getByRole('heading', { name: 'Monthly win rates' })).toBeVisible()
   expect(requests.some(request => request.includes('/win-rate-trends?') && request.includes('interval=month'))).toBeTruthy()
-  await page.getByText('2024-01-01 to 2024-01-31').click()
+  await expect(page.getByRole('table', { name: 'Experimental tier ranking' }).getByRole('row', { name: /Aluren/ })).toContainText('20.0%')
+  await page.getByRole('combobox', { name: 'Tier period' }).selectOption('2024-01-01')
+  await expect(page.getByRole('table', { name: 'Experimental tier ranking' }).getByRole('row', { name: /Aluren/ })).toContainText('90.0%')
+  await page.locator('summary').filter({ hasText: '2024-01-01 to 2024-01-31' }).click()
   await expect(page.getByText(/Large event \(80 entrants\)/).first()).toBeVisible()
-  await page.getByLabel('Period').selectOption('quarter')
+  await page.getByRole('combobox', { name: 'Period', exact: true }).selectOption('quarter')
   await expect(page.getByRole('heading', { name: 'Quarterly win rates' })).toBeVisible()
-  await expect(page.getByText('2024-01-01 to 2024-03-31')).toBeVisible()
+  await expect(page.getByRole('table', { name: 'Experimental tier ranking' }).getByRole('row', { name: /Aluren/ })).toContainText('55.0%')
   await page.getByRole('button', { name: 'Sign out' }).click()
   await expect(page.getByLabel('Access key')).toBeVisible()
 })
