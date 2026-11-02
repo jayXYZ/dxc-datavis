@@ -13,7 +13,7 @@ export default function ExploratoryStats({ start, end, accessKey }: { start: str
   const [events, setEvents] = useState<Marker[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const load = async () => {
+  const load = async (selectedInterval: 'month' | 'quarter') => {
     setLoading(true); setError(''); setTiers(null); setPeriods(null); setEvents(null)
     const base = import.meta.env.VITE_API_URL || DEFAULT_API_BASE_URL
     const get = async (name: string, extra = '') => {
@@ -24,7 +24,7 @@ export default function ExploratoryStats({ start, end, accessKey }: { start: str
     }
     try {
       const [tierResult, trendResult, eventResult] = await Promise.all([
-        get('experimental-tiers'), get('win-rate-trends', `&interval=${interval}`), get('event-markers')
+        get('experimental-tiers'), get('win-rate-trends', `&interval=${selectedInterval}`), get('event-markers')
       ])
       setTiers(tierResult.records); setPeriods(trendResult.periods); setEvents(eventResult.events)
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Could not load reports') }
@@ -32,8 +32,8 @@ export default function ExploratoryStats({ start, end, accessKey }: { start: str
   }
   return <section className="space-y-3 border-t pt-5"><h2 className="text-xl font-semibold">Trends and experimental tiers</h2>
     <p className="text-sm text-muted-foreground">Load recorded non-mirror win rates, changes from the preceding period, and events with at least 65 entrants. These reports use all event sizes for win rates.</p>
-    <label className="text-sm">Period <select disabled={loading} value={interval} onChange={e => { setInterval(e.target.value as 'month' | 'quarter'); setPeriods(null) }} className="ml-2 rounded border bg-background p-1"><option value="quarter">Quarterly</option><option value="month">Monthly</option></select></label>{' '}
-    <button type="button" className="rounded border px-3 py-2 text-sm" disabled={loading || !start || !end || start > end} onClick={load}>{loading ? 'Loading…' : 'Load trends and tiers for selected dates'}</button>
+    <label className="text-sm">Period <select disabled={loading || !start || !end || start > end} value={interval} onChange={e => { const next = e.target.value as 'month' | 'quarter'; setInterval(next); void load(next) }} className="ml-2 rounded border bg-background p-1"><option value="quarter">Quarterly</option><option value="month">Monthly</option></select></label>{' '}
+    <button type="button" className="rounded border px-3 py-2 text-sm" disabled={loading || !start || !end || start > end} onClick={() => void load(interval)}>{loading ? 'Loading…' : 'Load trends and tiers for selected dates'}</button>
     {error && <p role="alert">{error}</p>}
     {tiers && <><h3 className="font-semibold">Experimental tiers</h3><p className="text-sm text-muted-foreground">An exploratory popularity-weighted score, win rate × log(matches), with a minimum of 10 matches. Cutoffs are arbitrary and the ranking has not been validated as a measure of deck strength.</p>
       <div className="overflow-x-auto"><table className="w-full text-left text-sm"><thead><tr><th>Archetype</th><th>Tier</th><th>Wins</th><th>Losses</th><th>Matches</th><th>Win rate</th><th>Score</th><th>Relative score</th></tr></thead><tbody>{tiers.map(row => <tr className="border-t" key={row.archetype}><td>{row.archetype}</td><td>{row.tier ?? '—'}</td><td>{row.wins}</td><td>{row.losses}</td><td>{row.total_matches}</td><td>{percent(row.win_rate)}</td><td>{row.experimental_score?.toFixed(2)}</td><td>{percent(row.relative_score)}</td></tr>)}</tbody></table></div></>}
