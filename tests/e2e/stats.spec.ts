@@ -1,0 +1,31 @@
+import { expect, test } from '@playwright/test'
+
+test('shows verified placement bands and filters events by size', async ({ page }) => {
+  const requests: string[] = []
+  await page.route('**/analysis/**', async route => {
+    const url = new URL(route.request().url())
+    if (url.pathname.endsWith('/archetype-matrix')) return route.fulfill({ json: { archetypes: [], matrix: {}, time_frame: 'all_time' } })
+    if (url.pathname.endsWith('/win-loss-records')) return route.fulfill({ json: [] })
+    requests.push(`${url.pathname}?${url.searchParams}`)
+    if (url.pathname.endsWith('/top-eight')) return route.fulfill({ json: { event_ids: [1], eligible_events: 1, known_top_eight: 8, top_eight_slots: 8, top_eight_gini: 0, top_eight_gini_simpson: 0, archetypes: [{ archetype: 'Aluren', finish_1: 1, finish_2: 0, finish_4: 0, finish_8: 0, top_eight: 1, top_eight_share: 0.125, placement_points: 8, top_eight_conversion: 0.5, playoff_wins: 3, playoff_losses: 0, playoff_win_rate: 1 }] } })
+    if (url.pathname.endsWith('/field-metagame')) return route.fulfill({ json: { eligible_events: 1, entrants: 65, complete_field_entrants: 65, spice_field_share: 0, archetypes: [] } })
+    if (url.pathname.endsWith('/winners-metagame')) return route.fulfill({ json: { eligible_events: 1, recorded_matches: 5, unclassified_net_wins: 0, unregistered_net_wins: 0, archetypes: [] } })
+    if (url.pathname.endsWith('/experimental-tiers')) return route.fulfill({ json: { records: [] } })
+    if (url.pathname.endsWith('/win-rate-trends')) return route.fulfill({ json: { periods: [{ start_date: '2024-01-01', end_date: '2024-01-31', records: [] }] } })
+    if (url.pathname.endsWith('/event-markers')) return route.fulfill({ json: { events: [{ id: 1, name: 'Large event', start_date: '2024-01-12T00:00:00', entrant_count: 80 }] } })
+    return route.abort()
+  })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Statistics' }).click()
+  await expect(page.getByRole('heading', { name: 'Verified playoff top eight' })).toBeVisible()
+  await expect(page.getByRole('columnheader', { name: '1st' })).toBeVisible()
+  expect(requests.some(request => request.includes('/top-eight?') && request.includes('min_entrants=65'))).toBeTruthy()
+  await page.getByLabel('Include events with fewer than 65 entrants').check()
+  await expect.poll(() => requests.some(request => request.includes('/top-eight?') && request.includes('min_entrants=0'))).toBeTruthy()
+  await page.getByLabel('Period').selectOption('month')
+  await page.getByRole('button', { name: 'Load trends and tiers for selected dates' }).click()
+  await expect(page.getByRole('heading', { name: 'Monthly win rates' })).toBeVisible()
+  expect(requests.some(request => request.includes('/win-rate-trends?') && request.includes('interval=month'))).toBeTruthy()
+  await page.getByText('2024-01-01 to 2024-01-31').click()
+  await expect(page.getByText(/Large event \(80 entrants\)/).first()).toBeVisible()
+})

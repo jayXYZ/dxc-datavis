@@ -1,5 +1,6 @@
 import './App.css'
 import MetaMatrix from '@/components/MetaMatrix'
+import Stats from '@/components/Stats'
 import type { ArchetypeRecord, MatchupData } from '@/lib/api-client'
 import { ThemeProvider } from "@/components/theme-provider"
 import { useState, useEffect, useRef } from 'react'
@@ -60,6 +61,7 @@ async function fetchAllWinLossRecords(
 }
 
 function App() {
+  const [view, setView] = useState<'matrix' | 'stats'>('matrix');
   const [matchupData, setMatchupData] = useState<Record<string, Record<string, MatchupData>>>({});
   const [archetypeRecords, setArchetypeRecords] = useState<Record<string, ArchetypeRecord>>({});
   const [archetypes, setArchetypes] = useState<string[]>([]);
@@ -494,7 +496,7 @@ function App() {
         </div>
       ) : (
         <SidebarProvider>
-          <AppSidebar 
+          {view === 'matrix' && <AppSidebar
             archetypes={sortArchetypes('alpha', 'desc', archetypes)}
             visibleArchetypes={visibleArchetypes}
             setVisibleArchetypes={handleVisibilityChange}
@@ -514,9 +516,13 @@ function App() {
             setMatrixViewMode={setMatrixViewMode}
             selectedVenues={selectedVenues}
             onVenuesChange={handleVenuesChange}
-          />
+          />}
           <SidebarInset className="min-w-0">
-            <MetaMatrix 
+            <nav className="flex gap-4 border-b px-4 py-3" aria-label="Reports">
+              <button type="button" aria-current={view === 'matrix' ? 'page' : undefined} onClick={() => setView('matrix')}>Matchups</button>
+              <button type="button" aria-current={view === 'stats' ? 'page' : undefined} onClick={() => setView('stats')}>Statistics</button>
+            </nav>
+            {view === 'stats' ? <Stats /> : <MetaMatrix
               key={`matrix-${matrixViewMode}-${visibleArchetypes.length}-${archetypes.length}`}
               matchupData={matchupData}
               archetypeRecords={archetypeRecords}
@@ -527,7 +533,7 @@ function App() {
               startDate={timeFrameData.startDate}
               endDate={timeFrameData.endDate}
               isFetchingInBackground={isFetchingInBackground}
-            />
+            />}
           </SidebarInset>
         </SidebarProvider>
       )}
